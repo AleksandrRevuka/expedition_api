@@ -1,0 +1,19 @@
+services:
+  expedition:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: expedition
+    ports:
+      - "8000:8000"
+    command: "uvicorn src.app:app --reload --use-colors --host 0.0.0.0 --port 8000 --proxy-headers"
+    env_file:
+      - ../.env
+    volumes:
+      - ../:/app/
+    networks:
+      - expedition
+
+networks:
+  expedition:
+    external: true

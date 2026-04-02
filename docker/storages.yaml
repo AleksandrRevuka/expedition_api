@@ -1,0 +1,23 @@
+services:
+  expedition-postgres:
+    image: postgres:15
+    container_name: expedition_postgres
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-platforma17}
+    ports:
+      - "5433:5432"
+    volumes:
+      - expedition_postgres_data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "timezone=UTC"]
+    networks:
+      - expedition
+
+networks:
+  expedition:
+    external: true
+
+volumes:
+  expedition_postgres_data:
+    driver: local
