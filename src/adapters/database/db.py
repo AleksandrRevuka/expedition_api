@@ -15,7 +15,6 @@ from sqlalchemy.ext.asyncio import (
 
 from src.adapters.database.config import get_database_config
 from src.adapters.database.models._model_base import BaseWithTimestamps
-from src.conf.app_config import get_app_config
 from src.conf.logging_config import LOGGER
 
 
@@ -43,15 +42,15 @@ class AsyncDatabaseSQLAlchemyManager:
     async def connect(self, **kwargs: Any) -> None:
         self._engine = create_async_engine(self._db_uri, **kwargs)
         LOGGER.info(
-                f"Async Database SQLAlchemy Manager started. Id {id(self._engine)}", "started"
-            )
+            f"Async Database SQLAlchemy Manager started. Id {id(self._engine)}",
+        )
 
     async def disconnect(self) -> None:
         assert self._engine is not None
         await self._engine.dispose()
         LOGGER.info(
-                f"Async Database SQLAlchemy Manager stopped. Id {id(self._engine)}", "stopped"
-            )
+            f"Async Database SQLAlchemy Manager stopped. Id {id(self._engine)}",
+        )
 
     def init_session_factory(self) -> None:
         self._session_factory = async_scoped_session(

@@ -1,11 +1,12 @@
 import asyncio
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from alembic import context
 from src.adapters.database.config import get_database_config as _get_db_cfg
+from src.adapters.database.models import _all_models  # noqa: F401
 from src.adapters.database.models._model_base import BaseWithTimestamps
 
 db_config = _get_db_cfg()
