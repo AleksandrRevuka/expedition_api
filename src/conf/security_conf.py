@@ -7,7 +7,6 @@ class JWTConfig(BaseSet):
     JWT_TOKEN_SECRET_KEY: str = "dev-only-secret-key-override-in-production"
     JWT_TOKEN_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINS: int = 30
-    JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
 
 @lru_cache

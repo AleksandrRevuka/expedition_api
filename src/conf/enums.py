@@ -14,12 +14,11 @@ class Role(StrEnum):
 
 class ExpeditionStatus(StrEnum):
     draft = "draft"
+    ready = "ready"
     active = "active"
-    completed = "completed"
-    cancelled = "cancelled"
+    finished = "finished"
 
 
 class MemberState(StrEnum):
     invited = "invited"
     confirmed = "confirmed"
-    declined = "declined"

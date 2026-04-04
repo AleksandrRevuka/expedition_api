@@ -24,7 +24,7 @@ class DatabaseConfig(BaseSet):
     DATABASE_PORT: int = 5432
     DATABASE_USER: str = "postgres"
     DATABASE_PASSWORD: str = ""
-    DATABASE_NAME: str = "platforma17"
+    DATABASE_NAME: str = "expedition"
 
     DATABASE_ECHO: bool = False
     DATABASE_AUTO_FLUSH: bool = False
