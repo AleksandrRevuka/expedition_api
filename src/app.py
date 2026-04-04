@@ -16,7 +16,9 @@ from src.common.exceptions.global_error_handler import GlobalErrorHandler
 from src.conf.app_config import get_cors_config
 from src.conf.logging_config import LOGGER
 
-COLOR_URL = click.style("http://127.0.0.1:8000/docs", bold=True, fg="green", italic=True)
+COLOR_URL = click.style(
+    "http://127.0.0.1:8000/docs", bold=True, fg="green", italic=True
+)
 MESSAGE = f"Open {COLOR_URL} to start 'Expedition API'"
 
 

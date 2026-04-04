@@ -1,17 +1,27 @@
-"""
-Central router aggregation.
-
-Routers are included here as modules are implemented:
-  auth        → public_router        POST /api/auth/register, /api/auth/login
-  users       → authenticated_router GET  /api/users/me, /api/users/{id}
-  expeditions → public_router + chief_router
-  members     → chief_router + member_router
-"""
-
 from fastapi import APIRouter
+
+from src.modules.auth.presentation.api.routers.auth import public_router as auth_router
+from src.modules.expeditions.presentation.api.routers.expeditions import (
+    public_router as expeditions_public_router,
+    chief_router as expeditions_chief_router,
+)
+from src.modules.expeditions.presentation.api.routers.members import (
+    members_router,
+    chief_router,
+)
+from src.modules.users.presentation.api.routers.users import authenticated_router
+from src.modules.websocket.presentation.api.routers.ws import ws_router
 
 api_router = APIRouter(prefix="/api")
 
-# Uncomment when routers exist:
-# from src.modules.auth.presentation.api.routers.auth import public_router as auth_router
-# api_router.include_router(auth_router, prefix="/auth", tags=["Auth"])
+api_router.include_router(ws_router, prefix="/ws", tags=["Websocket"])
+api_router.include_router(auth_router, prefix="/auth", tags=["Auth"])
+api_router.include_router(authenticated_router, prefix="/users", tags=["Users"])
+api_router.include_router(
+    expeditions_public_router, prefix="/expeditions", tags=["Expeditions"]
+)
+api_router.include_router(
+    expeditions_chief_router, prefix="/expeditions", tags=["Expeditions"]
+)
+api_router.include_router(members_router, prefix="/expeditions", tags=["Members"])
+api_router.include_router(chief_router, prefix="/expeditions", tags=["Members"])
