@@ -2,10 +2,10 @@ from typing import Any, Protocol
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.common.domain.base_models import BaseDomainModel
+from src.common.domain.base_models import AggregateRoot
 
 
-class BaseAsyncRepository[MT: BaseDomainModel](Protocol):
+class BaseAsyncRepository[MT: AggregateRoot](Protocol):
     @property
     def model(self) -> type[MT]: ...
 
