@@ -1,9 +1,12 @@
-from dataclasses import dataclass
+from typing import Any
+from src.adapters.database.models._model_utils.datetime import get_utc_now
+from datetime import datetime
+from dataclasses import dataclass, asdict, field
 
 from src.common.interfaces.events import AbstractEvent
 
 
-class AggregateRoot:
+class BaseAggregateRoot:
     def __init__(self) -> None:
         self._events: list[AbstractEvent] = []
 
@@ -27,17 +30,25 @@ class AggregateRoot:
 
 
 @dataclass
-class BaseDomainModel(AggregateRoot):
-    """Base class for all domain aggregates and entities."""
+class AggregateRoot(BaseAggregateRoot):
+    def to_dict(
+        self, exclude: set[str] | None = None, include: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
+        data: dict[str, Any] = asdict(self)  # type: ignore[arg-type]
+        if exclude:
+            for key in exclude:
+                try:
+                    del data[key]
+                except KeyError:
+                    pass
 
-    def __post_init__(self) -> None:
-        super().__init__()
-        # Lazily init SA state for imperatively-mapped Pydantic dataclasses
-        try:
-            from sqlalchemy.orm.instrumentation import manager_of_class
+        if include:
+            data.update(include)
 
-            mgr = manager_of_class(type(self))
-            if mgr is not None:
-                mgr._new_state_if_none(self)
-        except Exception:
-            pass
+        return data
+
+
+@dataclass
+class BaseWithTimestamps:
+    created_at: datetime = field(default_factory=get_utc_now)
+    updated_at: datetime = field(default_factory=get_utc_now)

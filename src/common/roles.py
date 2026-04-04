@@ -11,15 +11,11 @@ class RolesAccess:
 
     async def __call__(
         self,
-        request: Request,  # noqa: ARG002
-        current_user=Depends(get_current_user),  # type: ignore[assignment]
+        request: Request,
+        current_user=Depends(get_current_user),
     ) -> None:
         if current_user.role not in self.allowed_roles:
-            LOGGER.error(
-                "Access denied",
-                role=current_user.role,
-                user_id=str(getattr(current_user, "user_id", "?")),
-            )
+            LOGGER.error("Access denied")
             raise HTTPException(status_code=403, detail="Permission denied")
 
 

@@ -18,3 +18,6 @@ class SuccessResponse(BaseModel):
     @classmethod
     def respond(cls, message: str = "") -> dict[str, str]:
         return cls(message=message).model_dump()
+
+
+class BaseResponseModel(BaseModel): ...
