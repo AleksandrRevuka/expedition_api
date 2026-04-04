@@ -73,4 +73,3 @@ class AsyncSqlAlchemyUnitOfWork(AsyncBaseUnitOfWork):
 
         while self._events:
             yield self._events.pop(0)
-
