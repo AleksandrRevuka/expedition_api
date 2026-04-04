@@ -178,6 +178,9 @@ platforma17_test.sqlite
 
 # Hook test - second attempt
 
+# Git worktrees
+.worktrees/
+
 
 # Skylos profiling/analysis artifacts
 .skylos/
