@@ -12,9 +12,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 @inject
 async def get_current_user(
-    uow=Depends(Provide[Container.uows.users_storage_uow]),  # type: ignore[assignment]
+    uow=Depends(Provide[Container.uows.users_storage_uow]),
     token: str = Depends(oauth2_scheme),
-):  # type: ignore[return]
+):
     """
     Decode JWT, look up the user in DB, return UserAggregate.
     NOTE: `uow` type is annotated loosely here until the users module lands and
