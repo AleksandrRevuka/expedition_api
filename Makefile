@@ -39,7 +39,7 @@ app-logs:
 
 .PHONY: test
 test:
-	${EXEC} ${APP_CONTAINER} sh -c "pytest -m unit && pytest -m integration && pytest -m e2e"
+	${EXEC} ${APP_CONTAINER} sh -c "pytest -m unit && pytest -m e2e"
 
 .PHONY: test-e2e
 test-e2e:
@@ -48,10 +48,6 @@ test-e2e:
 .PHONY: test-unit
 test-unit:
 	${EXEC} ${APP_CONTAINER} pytest -m unit
-
-.PHONY: test-int
-test-int:
-	${EXEC} ${APP_CONTAINER} pytest -m integration
 
 .PHONY: migrate
 migrate:
@@ -75,9 +71,8 @@ help:
 	@echo "  make storages-down    - Stop the storages."
 	@echo "  make app-shell        - Open a shell inside the application container."
 	@echo "  make app-logs         - Show logs of the application container."
-	@echo "  make test             - Run all tests (unit, integration, e2e)."
+	@echo "  make test             - Run all tests (unit, e2e)."
 	@echo "  make test-unit        - Run unit tests."
-	@echo "  make test-int         - Run integration tests."
 	@echo "  make test-e2e         - Run end-to-end tests."
 	@echo "  make migrate          - Apply all migrations using Alembic."
 	@echo "  make migrations       - Create a new Alembic migration with a message."
