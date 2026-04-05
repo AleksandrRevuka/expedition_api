@@ -1,3 +1,4 @@
+from src.conf.app_config import get_app_config
 from dependency_injector.wiring import inject
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -37,5 +38,9 @@ async def login(
 ) -> TokenResponse:
     command = LoginUserCommand(email=form_data.username, password=form_data.password)
     token = await bus.handle(command)
-    print(token)
+
+    conf = get_app_config()
+    if conf.ENVIRONMENT == "dev":
+        print(token)  #TODO remove
+
     return TokenResponse(access_token=token)

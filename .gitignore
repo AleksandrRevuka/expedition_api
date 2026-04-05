@@ -174,7 +174,7 @@ cython_debug/
 .idea/
 .idea/BackEnd.iml
 .idea/misc.xml
-platforma17_test.sqlite
+expedition_test.sqlite
 
 # Hook test - second attempt
 

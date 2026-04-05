@@ -1,10 +1,10 @@
 from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, status
+from fastapi import Depends, status
 
 from src.common.container.main_container import Container
-from src.common.role_routers import ChiefAPIRouter
+from src.common.role_routers import ChiefAPIRouter, AuthenticatedAPIRouter
 from src.common.security.auth_dependencies import get_current_user
 from src.conf.enums import ExpeditionStatus
 from src.modules.expeditions.application.commands.commands import (
@@ -30,11 +30,11 @@ from src.modules.expeditions.presentation.api.schemas.responses import (
 )
 from src.modules.expeditions.presentation.dependencies import MessagebusExpeditionsDep
 
-public_router = APIRouter()
 chief_router = ChiefAPIRouter()
+auth_router = AuthenticatedAPIRouter()
 
 
-@public_router.get("/", response_model=list[ExpeditionResponse])
+@auth_router.get("/", response_model=list[ExpeditionResponse])
 @inject
 async def list_expeditions(
     uow=Depends(Provide[Container.uows.expeditions_storage_uow]),
@@ -45,7 +45,7 @@ async def list_expeditions(
     return [ExpeditionResponse.from_domain(e) for e in expeditions]
 
 
-@public_router.get("/{expedition_id}", response_model=ExpeditionResponse)
+@auth_router.get("/{expedition_id}", response_model=ExpeditionResponse)
 @inject
 async def get_expedition(
     expedition_id: UUID,

@@ -12,7 +12,7 @@ class UvicornConfig(BaseSet):
 
 
 class AppConfig(BaseSet):
-    ENVIRONMENT: Environment = Environment.dev
+    ENVIRONMENT: Environment = Environment.prod
     TIMEZONE: str = "UTC"
 
 
