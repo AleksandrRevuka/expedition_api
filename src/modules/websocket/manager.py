@@ -18,9 +18,7 @@ class ExpeditionConnectionManager:
         user_id: UUID,
     ) -> None:
         LOGGER.debug(
-            "New expedition connection: expedition_id=%s, user_id=%s",
-            expedition_id,
-            user_id,
+            f"New expedition connection: {expedition_id}, user_id={user_id}"
         )
 
         self._connections.setdefault(expedition_id, {})

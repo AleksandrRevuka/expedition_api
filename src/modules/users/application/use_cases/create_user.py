@@ -19,7 +19,7 @@ class CreateUserUseCase:
                 f"User with email {command.email!r} already exists"
             )
         hashed = self._password_service.hash(command.password)
-        user = UserAggregate(
+        user = UserAggregate.create(
             email=command.email,
             hashed_password=hashed,
             name=f"{command.first_name} {command.last_name}",

@@ -1,14 +1,13 @@
+from fastapi import Depends
 from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import Depends, HTTPException, status
 
 from src.common.container.main_container import Container
 from src.common.role_routers import AuthenticatedAPIRouter
 from src.common.security.auth_dependencies import get_current_user
 from src.modules.users.application.use_cases.get_user import GetUserUseCase
 from src.modules.users.domain.aggregates.user import UserAggregate
-from src.modules.users.domain.exceptions.exceptions import UserNotFoundError
 from src.modules.users.presentation.api.schemas.responses import UserResponse
 
 authenticated_router = AuthenticatedAPIRouter()
@@ -29,8 +28,7 @@ async def get_user(
 ) -> UserResponse:
     async with uow:
         use_case = GetUserUseCase(uow.users)
-        try:
-            user = await use_case(user_id)
-        except UserNotFoundError as e:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+        user = await use_case(user_id)
+        
     return UserResponse.from_domain(user)

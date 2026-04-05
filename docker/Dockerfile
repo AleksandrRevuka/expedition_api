@@ -14,7 +14,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 
 COPY pyproject.toml uv.lock ./
 
-RUN uv export --frozen --no-dev -o /requirements.txt && \
+RUN uv export --frozen --all-groups -o /requirements.txt && \
     uv pip install --system --no-cache -r /requirements.txt
 
 COPY . /app/

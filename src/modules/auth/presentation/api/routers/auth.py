@@ -1,6 +1,6 @@
 from src.conf.app_config import get_app_config
 from dependency_injector.wiring import inject
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from src.modules.auth.presentation.api.schemas.schemas import TokenResponse
@@ -8,7 +8,6 @@ from src.modules.users.application.commands.commands import (
     CreateUserCommand,
     LoginUserCommand,
 )
-from src.modules.users.domain.exceptions.exceptions import UserAlreadyExistsError
 from src.modules.users.presentation.api.schemas.responses import UserResponse
 from src.modules.users.presentation.dependencies import MessagebusUsersDep
 
@@ -23,10 +22,9 @@ async def register(
     body: CreateUserCommand,
     bus: MessagebusUsersDep,
 ) -> UserResponse:
-    try:
-        user = await bus.handle(body)
-    except UserAlreadyExistsError as e:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
+
+    user = await bus.handle(body)
+
     return UserResponse.from_domain(user)
 
 
