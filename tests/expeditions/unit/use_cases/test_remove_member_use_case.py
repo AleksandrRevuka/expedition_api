@@ -1,21 +1,18 @@
+from typing import Callable, Any, Coroutine
+from uuid import uuid4
+
 import pytest
-from unittest.mock import AsyncMock
+from pytest_mock import MockerFixture
 
 from src.modules.expeditions.application.commands.commands import RemoveMemberCommand
-from src.modules.expeditions.application.use_cases.remove_member import (
-    RemoveMemberUseCase,
-)
+from src.modules.expeditions.application.use_cases.remove_member import RemoveMemberUseCase
+from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
+from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
 from src.modules.expeditions.domain.exceptions.exceptions import (
     ExpeditionAccessDeniedError,
     ExpeditionNotFoundError,
 )
-from tests.config import (
-    CHIEF_ID,
-    EXPEDITION_ID,
-    MEMBER_ID,
-    make_expedition,
-    make_expedition_member,
-)
+from tests.config import CHIEF_ID, EXPEDITION_ID, MEMBER_ID
 
 pytestmark = pytest.mark.unit
 
@@ -23,14 +20,19 @@ pytestmark = pytest.mark.unit
 class TestRemoveMemberUseCase:
 
     @pytest.mark.asyncio
-    async def test_remove_member_success(self) -> None:
-        member = make_expedition_member()
-        expedition = make_expedition(members=[member])
+    async def test_remove_member_success(
+        self,
+        mocker: MockerFixture,
+        expedition_factory: Callable[..., Coroutine[Any, Any, ExpeditionAggregate]],
+        member_factory: Callable[..., Coroutine[Any, Any, ExpeditionMemberEntity]],
+    ) -> None:
+        member = await member_factory()
+        expedition = await expedition_factory(members=[member])
 
-        mock_expeditions = AsyncMock()
+        mock_expeditions = mocker.AsyncMock()
         mock_expeditions.get_one_with_relationships.return_value = expedition
 
-        mock_members = AsyncMock()
+        mock_members = mocker.AsyncMock()
 
         use_case = RemoveMemberUseCase(mock_expeditions, mock_members)
         command = RemoveMemberCommand(
@@ -45,11 +47,11 @@ class TestRemoveMemberUseCase:
         mock_members.delete_one.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_remove_member_expedition_not_found_raises_error(self) -> None:
-        mock_expeditions = AsyncMock()
+    async def test_remove_member_expedition_not_found_raises_error(self, mocker: MockerFixture) -> None:
+        mock_expeditions = mocker.AsyncMock()
         mock_expeditions.get_one_with_relationships.return_value = None
 
-        mock_members = AsyncMock()
+        mock_members = mocker.AsyncMock()
 
         use_case = RemoveMemberUseCase(mock_expeditions, mock_members)
         command = RemoveMemberCommand(
@@ -62,16 +64,19 @@ class TestRemoveMemberUseCase:
             await use_case(command)
 
     @pytest.mark.asyncio
-    async def test_remove_member_wrong_chief_raises_error(self) -> None:
-        from uuid import uuid4
+    async def test_remove_member_wrong_chief_raises_error(
+        self,
+        mocker: MockerFixture,
+        expedition_factory: Callable[..., Coroutine[Any, Any, ExpeditionAggregate]],
+        member_factory: Callable[..., Coroutine[Any, Any, ExpeditionMemberEntity]],
+    ) -> None:
+        member = await member_factory()
+        expedition = await expedition_factory(members=[member])
 
-        member = make_expedition_member()
-        expedition = make_expedition(members=[member])
-
-        mock_expeditions = AsyncMock()
+        mock_expeditions = mocker.AsyncMock()
         mock_expeditions.get_one_with_relationships.return_value = expedition
 
-        mock_members = AsyncMock()
+        mock_members = mocker.AsyncMock()
 
         use_case = RemoveMemberUseCase(mock_expeditions, mock_members)
         command = RemoveMemberCommand(

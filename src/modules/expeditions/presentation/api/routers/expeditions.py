@@ -6,7 +6,6 @@ from fastapi import Depends, status
 from src.common.container.main_container import Container
 from src.common.role_routers import ChiefAPIRouter, AuthenticatedAPIRouter
 from src.common.security.auth_dependencies import get_current_user
-from src.conf.enums import ExpeditionStatus
 from src.modules.expeditions.application.commands.commands import (
     ChangeExpeditionStatusCommand,
     CreateExpeditionCommand,
@@ -34,7 +33,7 @@ chief_router = ChiefAPIRouter()
 auth_router = AuthenticatedAPIRouter()
 
 
-@auth_router.get("/", response_model=list[ExpeditionResponse])
+@auth_router.get("", response_model=list[ExpeditionResponse])
 @inject
 async def list_expeditions(
     uow=Depends(Provide[Container.uows.expeditions_storage_uow]),
@@ -60,7 +59,7 @@ async def get_expedition(
 
 
 @chief_router.post(
-    "/", response_model=ExpeditionResponse, status_code=status.HTTP_201_CREATED
+    "", response_model=ExpeditionResponse, status_code=status.HTTP_201_CREATED
 )
 @inject
 async def create_expedition(
@@ -137,14 +136,14 @@ async def delete_member(
 async def change_status(
     expedition_id: UUID,
     body: ChangeStatusBody,
-    status: ExpeditionStatus,
+    # status: ExpeditionStatus,
     bus: MessagebusExpeditionsDep,
     current_user=Depends(get_current_user),
 ) -> ExpeditionResponse:
     command = ChangeExpeditionStatusCommand(
         expedition_id=expedition_id,
         chief_id=current_user.id,
-        new_status=status,
+        new_status=body.status,
     )
 
     expedition = await bus.handle(command)

@@ -1,34 +1,38 @@
-from src.modules.users.domain.aggregates.user import UserAggregate
-from src.conf.enums import Role
-from tests.config import make_user
+from typing import Callable, Any, Coroutine
+
 import pytest
 
+from src.conf.enums import Role
+from src.modules.users.domain.aggregates.user import UserAggregate
 
-pytestmark = pytest.mark.unit
+pytestmark = [pytest.mark.unit, pytest.mark.asyncio]
 
 
 class TestUserAggregate:
-    
-    def test_create_user_aggregate_success(self):
-        user = make_user()
+
+    async def test_create_user_aggregate_success(
+        self, user_factory: Callable[..., Coroutine[Any, Any, UserAggregate]]
+    ) -> None:
+        user = await user_factory()
 
         assert isinstance(user, UserAggregate)
         assert user.email == "test@gmail.com"
         assert user.name == "test_username"
         assert user.role == Role.member
 
-    def test_is_chief_user_aggregate_success(self):
+    async def test_is_chief_user_aggregate_success(
+        self, user_factory: Callable[..., Coroutine[Any, Any, UserAggregate]]
+    ) -> None:
+        user = await user_factory(role=Role.chief)
 
-        user = make_user(role=Role.chief)
-
-
-        assert isinstance(user, UserAggregate)  
+        assert isinstance(user, UserAggregate)
         assert user.is_chief()
         assert not user.is_member()
 
-    def test_id_member_user_aggregate_success(self):
-        
-        user = make_user(role=Role.member)
+    async def test_is_member_user_aggregate_success(
+        self, user_factory: Callable[..., Coroutine[Any, Any, UserAggregate]]
+    ) -> None:
+        user = await user_factory(role=Role.member)
 
         assert isinstance(user, UserAggregate)
         assert user.is_member()

@@ -1,3 +1,4 @@
+from src.conf.logging_config import LOGGER
 from sqlalchemy.orm import Mapper, joinedload, selectinload
 from typing import Any
 

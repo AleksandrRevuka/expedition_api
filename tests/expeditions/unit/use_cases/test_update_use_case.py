@@ -1,17 +1,17 @@
-import pytest
-from unittest.mock import AsyncMock
+from typing import Callable, Any, Coroutine
+from uuid import uuid4
 
-from src.modules.expeditions.application.commands.commands import (
-    UpdateExpeditionCommand,
-)
-from src.modules.expeditions.application.use_cases.update_expedition import (
-    UpdateExpeditionUseCase,
-)
+import pytest
+from pytest_mock import MockerFixture
+
+from src.modules.expeditions.application.commands.commands import UpdateExpeditionCommand
+from src.modules.expeditions.application.use_cases.update_expedition import UpdateExpeditionUseCase
+from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
 from src.modules.expeditions.domain.exceptions.exceptions import (
     ExpeditionAccessDeniedError,
     ExpeditionNotFoundError,
 )
-from tests.config import CHIEF_ID, EXPEDITION_ID, make_expedition
+from tests.config import CHIEF_ID, EXPEDITION_ID
 
 pytestmark = pytest.mark.unit
 
@@ -19,10 +19,12 @@ pytestmark = pytest.mark.unit
 class TestUpdateExpeditionUseCase:
 
     @pytest.mark.asyncio
-    async def test_update_expedition_success(self) -> None:
-        expedition = make_expedition()
+    async def test_update_expedition_success(
+        self, mocker: MockerFixture, expedition_factory: Callable[..., Coroutine[Any, Any, ExpeditionAggregate]]
+    ) -> None:
+        expedition = await expedition_factory()
 
-        mock_repo = AsyncMock()
+        mock_repo = mocker.AsyncMock()
         mock_repo.get_one_with_relationships.return_value = expedition
         mock_repo.update_one.return_value = expedition
 
@@ -39,8 +41,8 @@ class TestUpdateExpeditionUseCase:
         mock_repo.update_one.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_update_expedition_not_found_raises_error(self) -> None:
-        mock_repo = AsyncMock()
+    async def test_update_expedition_not_found_raises_error(self, mocker: MockerFixture) -> None:
+        mock_repo = mocker.AsyncMock()
         mock_repo.get_one_with_relationships.return_value = None
 
         use_case = UpdateExpeditionUseCase(mock_repo)
@@ -54,12 +56,12 @@ class TestUpdateExpeditionUseCase:
             await use_case(command)
 
     @pytest.mark.asyncio
-    async def test_update_expedition_wrong_chief_raises_error(self) -> None:
-        from uuid import uuid4
+    async def test_update_expedition_wrong_chief_raises_error(
+        self, mocker: MockerFixture, expedition_factory: Callable[..., Coroutine[Any, Any, ExpeditionAggregate]]
+    ) -> None:
+        expedition = await expedition_factory()
 
-        expedition = make_expedition()
-
-        mock_repo = AsyncMock()
+        mock_repo = mocker.AsyncMock()
         mock_repo.get_one_with_relationships.return_value = expedition
 
         use_case = UpdateExpeditionUseCase(mock_repo)

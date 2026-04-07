@@ -1,13 +1,12 @@
-import pytest
-from unittest.mock import AsyncMock
+from typing import Callable, Any, Coroutine
 
-from src.modules.expeditions.application.commands.commands import (
-    CreateExpeditionCommand,
-)
-from src.modules.expeditions.application.use_cases.create_expedition import (
-    CreateExpeditionUseCase,
-)
-from tests.config import CHIEF_ID, PAST_DATE, make_expedition
+import pytest
+from pytest_mock import MockerFixture
+
+from src.modules.expeditions.application.commands.commands import CreateExpeditionCommand
+from src.modules.expeditions.application.use_cases.create_expedition import CreateExpeditionUseCase
+from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
+from tests.config import CHIEF_ID, PAST_DATE
 
 pytestmark = pytest.mark.unit
 
@@ -15,10 +14,12 @@ pytestmark = pytest.mark.unit
 class TestCreateExpeditionUseCase:
 
     @pytest.mark.asyncio
-    async def test_create_expedition_success(self) -> None:
-        expedition = make_expedition()
+    async def test_create_expedition_success(
+        self, mocker: MockerFixture, expedition_factory: Callable[..., Coroutine[Any, Any, ExpeditionAggregate]]
+    ) -> None:
+        expedition = await expedition_factory()
 
-        mock_repo = AsyncMock()
+        mock_repo = mocker.AsyncMock()
         mock_repo.add_one.return_value = expedition
 
         use_case = CreateExpeditionUseCase(mock_repo)

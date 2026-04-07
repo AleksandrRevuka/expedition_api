@@ -4,6 +4,7 @@ from types import TracebackType
 from fastapi import Request
 
 from src.conf.logging_config import LOGGER
+from src.common.utils.color_message import color_message
 
 
 def exc_name(ex: Exception) -> str:
@@ -16,14 +17,31 @@ def exc_name_without_ex(exc: Exception) -> str:
 
 def log_wrapper(request: Request, exc: Exception, status_code: int) -> None:
     tb: TracebackType | None = exc.__traceback__
-    LOGGER.error(
-        f"HTTP {status_code} Error",
-        status_code=status_code,
-        method=request.method,
-        url=str(request.url),
-        exception_type=exc_name_without_ex(exc),
-    )
+
+    LOGGER.error(color_message(f"{'Start ' + str(status_code) + ' Error':-^100}", "error"))
+    LOGGER.error(color_message("url: ", "error") + f"{request.method}, {request.url}")
+    LOGGER.error(color_message("exc_type: ", "error") + f"{exc_name_without_ex(exc)}")
+
+    if hasattr(exc, "errors") and callable(exc.errors):
+        for index, err in enumerate(exc.errors(), 1):  # type: ignore
+            LOGGER.error(color_message(f"   ─ Error #{index} ─", "error"))
+            for key, val in err.items():
+                if key == "loc":
+                    loc_str = " → ".join(str(x) for x in val)
+                    LOGGER.error(color_message("       loc: ", "error") + loc_str)
+                elif key == "ctx" and isinstance(val, dict):
+                    for ctx_key, ctx_val in val.items():
+                        LOGGER.error(
+                            color_message(f"       ctx.{ctx_key}: ", "error") + str(ctx_val)
+                        )
+                else:
+                    LOGGER.error(color_message(f"       {key}: ", "error") + str(val))
+    else:
+        LOGGER.error(color_message("exc_message: ", "error") + repr(exc))
+
     if tb:
-        tb_lines = traceback.format_tb(tb)
-        if tb_lines:
-            LOGGER.debug("Exception traceback", traceback=tb_lines[-1])
+        last_trace = traceback.format_tb(tb)[-1]
+        formatted_trace = "\n".join([" " * 63 + line for line in last_trace.splitlines()])
+        LOGGER.debug(color_message("Traceback:", "error") + f"\n{formatted_trace}")
+
+    LOGGER.error(color_message(f"{'End ' + str(status_code) + ' Error':-^100}", "error"))

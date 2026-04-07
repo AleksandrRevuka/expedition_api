@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     UUID,
-    DateTime,
     Enum,
     ForeignKey,
     Integer,
@@ -17,7 +15,12 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.adapters.database.models._model_base import BaseWithTimestamps, SqlAlchemyBase
+from src.adapters.database.models._model_base import (
+    BaseWithTimestamps,
+    SqlAlchemyBase,
+    dt_tz,
+    dt_tz_with_none,
+)
 from src.conf.enums import ExpeditionStatus, MemberState
 
 if TYPE_CHECKING:
@@ -42,8 +45,8 @@ class Expedition(BaseWithTimestamps):
     status: Mapped[ExpeditionStatus] = mapped_column(
         Enum(ExpeditionStatus), default=ExpeditionStatus.draft
     )
-    start_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    end_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    start_at: Mapped[dt_tz]
+    end_at: Mapped[dt_tz_with_none]
     capacity: Mapped[int] = mapped_column(Integer)
 
     members: Mapped[list[ExpeditionMember]] = relationship(
@@ -77,8 +80,8 @@ class ExpeditionMember(SqlAlchemyBase):
     state: Mapped[MemberState] = mapped_column(
         Enum(MemberState), default=MemberState.invited
     )
-    invited_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    invited_at: Mapped[dt_tz]
+    confirmed_at: Mapped[dt_tz_with_none]
 
     expedition: Mapped[Expedition] = relationship(back_populates="members")
     user: Mapped[User] = relationship(back_populates="expedition_memberships")

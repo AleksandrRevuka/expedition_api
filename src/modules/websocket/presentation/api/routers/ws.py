@@ -1,3 +1,4 @@
+from src.conf.logging_config import LOGGER
 from uuid import UUID
 
 from dependency_injector.wiring import inject
@@ -22,6 +23,7 @@ async def expedition_websocket(
     expeditions_uow: ExpeditionsUoWDep,
     current_user: WsCurrentUserDep,
 ) -> None:
+
     if current_user is None:
         await websocket.close(code=1008)
         return

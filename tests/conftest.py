@@ -1,5 +1,13 @@
+from src.modules.websocket.manager import ExpeditionConnectionManager
+from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
+from src.modules.expeditions.infrastructure.units_of_work import ExpeditionsStorageUnitOfWork
+from tests.config import CHIEF_ID, EXPEDITION_ID, PAST_DATE, MEMBER_ID, USER_ID
+import uuid
+from datetime import datetime, UTC
+from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
+from typing import Any
 import os
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Callable, Coroutine
 
 import pytest
 import pytest_asyncio
@@ -16,7 +24,7 @@ from src.all_routers import api_router
 from src.app import CustomFastAPI
 from src.common.container.main_container import Container
 from src.common.exceptions.global_error_handler import GlobalErrorHandler
-from src.conf.enums import Role
+from src.conf.enums import Role, ExpeditionStatus, MemberState
 from src.conf.security_conf import get_jwt_config
 from src.modules.users.domain.aggregates.user import UserAggregate
 from src.modules.users.infrastructure.password_service import PasswordService
@@ -114,23 +122,115 @@ def token_service() -> TokenService:
 
 
 @pytest.fixture
-def access_token(token_service: TokenService) -> str:
-    email = "test@gmail.com"
-    return token_service.create_access_token(email)
+def access_token(token_service: TokenService) -> Callable[..., str]:
+
+    def _create_access_token(email: str = "test@gmail.com") -> str:
+        return token_service.create_access_token(email)
+
+    return _create_access_token
+
+
+@pytest.fixture
+def password_service() -> PasswordService:
+    return PasswordService()
+
+
+@pytest.fixture
+def ws_manager() -> ExpeditionConnectionManager:
+    return ExpeditionConnectionManager()
 
 
 @pytest_asyncio.fixture
-async def test_user(
+async def user_factory(
     map_models_to_orm: None,
     db_manager: AsyncDatabaseSQLAlchemyManager,
-) -> UserAggregate:
-    async with UsersStorageUnitOfWork(db_manager.session_factory) as uow:
-        user = UserAggregate.create(
-            name="test_username",
-            email="test@gmail.com",
-            hashed_password=PasswordService().hash("password"),
-            role=Role.member,
+    password_service: PasswordService,
+) -> Callable[..., Coroutine[Any, Any, UserAggregate]]:
+    async def _create_user(
+        id: uuid.UUID = USER_ID,
+        email: str = "test@gmail.com",
+        name: str = "test_username",
+        role: Role = Role.member,
+        password: str = "password",
+        persist: bool = False,
+    ) -> UserAggregate:
+        user = UserAggregate(
+            id=id,
+            name=name,
+            email=email,
+            hashed_password=password_service.hash(password),
+            role=role,
         )
-        await uow.users.add_one(user)
-        await uow.commit()
-    return user
+        if persist:
+            async with UsersStorageUnitOfWork(db_manager.session_factory) as uow:
+                await uow.users.add_one(user)
+                await uow.commit()
+        return user
+
+    return _create_user
+
+
+@pytest_asyncio.fixture
+async def expedition_factory(
+    map_models_to_orm: None,
+    db_manager: AsyncDatabaseSQLAlchemyManager,
+) -> Callable[..., Coroutine[Any, Any, ExpeditionAggregate]]:
+    async def _create_expedition(
+        id: uuid.UUID = EXPEDITION_ID,
+        title: str = "Test Expedition",
+        description: str = "Test Description",
+        status: ExpeditionStatus = ExpeditionStatus.draft,
+        chief_id: uuid.UUID = CHIEF_ID,
+        start_at: datetime = PAST_DATE,
+        end_at: datetime | None = None,
+        capacity: int = 5,
+        members: list[ExpeditionMemberEntity] | None = None,
+        persist: bool = False
+    ) -> ExpeditionAggregate:
+        expedition = ExpeditionAggregate(
+            id=id,
+            title=title,
+            description=description,
+            status=status,
+            chief_id=chief_id,
+            start_at=start_at,
+            end_at=end_at,
+            capacity=capacity,
+            members=members or [],
+        )
+        if persist:
+            async with ExpeditionsStorageUnitOfWork(db_manager.session_factory) as uow:
+                await uow.expeditions.add_one(expedition)
+                await uow.commit()
+        return expedition
+
+    return _create_expedition
+
+
+@pytest_asyncio.fixture
+async def member_factory(
+    map_models_to_orm: None,
+    db_manager: AsyncDatabaseSQLAlchemyManager,
+) -> Callable[..., Coroutine[Any, Any, ExpeditionMemberEntity]]:
+    async def _create_member(
+        expedition_id: uuid.UUID = EXPEDITION_ID,
+        user_id: uuid.UUID = MEMBER_ID,
+        state: MemberState = MemberState.invited,
+        confirmed_at: datetime | None = None,
+        persist: bool = False
+    ) -> ExpeditionMemberEntity:
+        member = ExpeditionMemberEntity(
+            expedition_id=expedition_id,
+            user_id=user_id,
+            state=state,
+            invited_at=datetime.now(UTC),
+            confirmed_at=confirmed_at
+
+        )
+        if persist:
+            async with ExpeditionsStorageUnitOfWork(db_manager.session_factory) as uow:
+                await uow.members.add_one(member)
+                await uow.commit()
+        return member
+
+    return _create_member

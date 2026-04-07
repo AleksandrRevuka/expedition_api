@@ -26,7 +26,7 @@ class AsyncSqlAlchemyUnitOfWork(AsyncBaseUnitOfWork):
         Entering the SqlAlchemyUnitOfWork.
         """
         self._session = self._session_factory()
-        LOGGER.debug(f"Open session UOW: {id(self._session)}", "started")
+        LOGGER.debug(f"Open session UOW: {id(self._session)}")
         return self
 
     async def __aexit__(
@@ -39,9 +39,9 @@ class AsyncSqlAlchemyUnitOfWork(AsyncBaseUnitOfWork):
         Exiting the SqlAlchemyUnitOfWork.
         """
         if exc_type:
-            LOGGER.debug(f"Exception: {True}", "error")
+            LOGGER.debug(f"Exception: {True}")
             await self.rollback()
-        LOGGER.debug(f"Close session UOW: {id(self._session)}", "stopped")
+        LOGGER.debug(f"Close session UOW: {id(self._session)}")
 
         await self.session.close()
 
