@@ -1,9 +1,10 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 
 import pytest
+from src.modules.users.domain.aggregates.user import UserAggregate
 
 from src.conf.enums import Role
-from src.modules.users.domain.aggregates.user import UserAggregate
 
 pytestmark = [pytest.mark.unit, pytest.mark.asyncio]
 

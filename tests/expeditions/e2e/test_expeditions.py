@@ -1,16 +1,22 @@
-from tests.config import USER_ID, CHIEF_ID, MEMBER_ID, MEMBER_ID_2
-from src.conf.enums import Role, ExpeditionStatus, MemberState
-from datetime import UTC
 import datetime
-from src.modules.expeditions.presentation.api.schemas.requests import CreateExpeditionBody, UpdateExpeditionBody, ChangeStatusBody
+from collections.abc import Callable, Coroutine
+from datetime import UTC
+from typing import Any
 from uuid import uuid4
+
+import pytest
 from fastapi import status
 from httpx import AsyncClient, Response
-import pytest
-from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
-from typing import Any
-from collections.abc import Callable, Coroutine
+from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
+from src.modules.expeditions.presentation.api.schemas.requests import (
+    ChangeStatusBody,
+    CreateExpeditionBody,
+    UpdateExpeditionBody,
+)
+
+from src.conf.enums import ExpeditionStatus, MemberState, Role
+from tests.config import CHIEF_ID, MEMBER_ID, MEMBER_ID_2, USER_ID
 
 type ExpeditionFactory = Callable[..., Coroutine[Any, Any, ExpeditionAggregate]]                                                                                                                                                                                                                                                                                    
 type MemberFactory = Callable[..., Coroutine[Any, Any, ExpeditionMemberEntity]]  

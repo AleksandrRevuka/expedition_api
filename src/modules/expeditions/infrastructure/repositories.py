@@ -1,13 +1,16 @@
-from src.conf.enums import ExpeditionStatus, MemberState
-from sqlalchemy import select
 from uuid import UUID
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.adapters.repositories.repository import AsyncRepository
+from src.conf.enums import ExpeditionStatus, MemberState
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
 from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
 from src.modules.expeditions.infrastructure.db.models import (
     Expedition as ExpeditionModel,
+)
+from src.modules.expeditions.infrastructure.db.models import (
     ExpeditionMember as ExpeditionMemberModel,
 )
 

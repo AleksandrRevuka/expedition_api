@@ -1,5 +1,5 @@
-from datetime import datetime, UTC
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from src.common.domain.base_models import AggregateRoot

@@ -1,15 +1,18 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 from uuid import uuid4
 
 import pytest
 from pytest_mock import MockerFixture
-
-from src.conf.enums import ExpeditionStatus, MemberState
 from src.modules.expeditions.application.commands.commands import ChangeExpeditionStatusCommand
-from src.modules.expeditions.application.use_cases.change_status import ChangeExpeditionStatusUseCase
+from src.modules.expeditions.application.use_cases.change_status import (
+    ChangeExpeditionStatusUseCase,
+)
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
 from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
 from src.modules.expeditions.domain.exceptions.exceptions import ExpeditionNotFoundError
+
+from src.conf.enums import ExpeditionStatus, MemberState
 from tests.config import CHIEF_ID, EXPEDITION_ID, PAST_DATE
 
 pytestmark = pytest.mark.unit

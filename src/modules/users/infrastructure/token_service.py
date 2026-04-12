@@ -1,11 +1,11 @@
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
+from fastapi import HTTPException, status
 from jose import JWTError, jwt
 
-from src.conf.security_conf import get_jwt_config
 from src.conf.logging_config import LOGGER
-from fastapi import HTTPException, status
+from src.conf.security_conf import get_jwt_config
 
 
 class TokenService:

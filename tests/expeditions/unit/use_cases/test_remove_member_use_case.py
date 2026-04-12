@@ -1,9 +1,9 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 from uuid import uuid4
 
 import pytest
 from pytest_mock import MockerFixture
-
 from src.modules.expeditions.application.commands.commands import RemoveMemberCommand
 from src.modules.expeditions.application.use_cases.remove_member import RemoveMemberUseCase
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
@@ -12,6 +12,7 @@ from src.modules.expeditions.domain.exceptions.exceptions import (
     ExpeditionAccessDeniedError,
     ExpeditionNotFoundError,
 )
+
 from tests.config import CHIEF_ID, EXPEDITION_ID, MEMBER_ID
 
 pytestmark = pytest.mark.unit

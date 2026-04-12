@@ -1,11 +1,12 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 
 import pytest
 from pytest_mock import MockerFixture
-
 from src.modules.expeditions.application.commands.commands import CreateExpeditionCommand
 from src.modules.expeditions.application.use_cases.create_expedition import CreateExpeditionUseCase
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
+
 from tests.config import CHIEF_ID, PAST_DATE
 
 pytestmark = pytest.mark.unit

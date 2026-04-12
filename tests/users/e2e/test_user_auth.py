@@ -1,10 +1,12 @@
 from collections.abc import Callable
-from src.modules.users.domain.aggregates.user import UserAggregate
-from src.conf.enums import Role
-from src.modules.users.application.commands.commands import CreateUserCommand
+
+import pytest
 from fastapi import status
 from httpx import AsyncClient, Response
-import pytest
+from src.modules.users.domain.aggregates.user import UserAggregate
+
+from src.conf.enums import Role
+from src.modules.users.application.commands.commands import CreateUserCommand
 
 
 @pytest.mark.e2e

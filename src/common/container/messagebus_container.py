@@ -8,8 +8,8 @@ from src.modules.expeditions.application.commands.commands import (
     CreateExpeditionCommand,
     DeleteExpeditionCommand,
     InviteMemberCommand,
-    UpdateExpeditionCommand,
     RemoveMemberCommand,
+    UpdateExpeditionCommand,
 )
 from src.modules.expeditions.application.handlers.command_handlers import (
     ChangeExpeditionStatusCommandHandler,
@@ -17,8 +17,8 @@ from src.modules.expeditions.application.handlers.command_handlers import (
     CreateExpeditionCommandHandler,
     DeleteExpeditionCommandHandler,
     InviteMemberCommandHandler,
-    UpdateExpeditionCommandHandler,
     RemoveMemberCommandHandler,
+    UpdateExpeditionCommandHandler,
 )
 from src.modules.expeditions.application.handlers.event_handlers import (
     ExpeditionStatusChangedEventHandler,

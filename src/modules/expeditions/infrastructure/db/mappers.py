@@ -1,4 +1,5 @@
 from sqlalchemy.orm import relationship
+
 from src.adapters.database.models._model_base import mapper_registry
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
 from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity

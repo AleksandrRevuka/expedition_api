@@ -1,12 +1,13 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 
 import pytest
 from pytest_mock import MockerFixture
-
-from src.modules.users.application.commands.commands import CreateUserCommand
 from src.modules.users.application.use_cases.create_user import CreateUserUseCase
 from src.modules.users.domain.aggregates.user import UserAggregate
 from src.modules.users.domain.exceptions.exceptions import UserAlreadyExistsError
+
+from src.modules.users.application.commands.commands import CreateUserCommand
 
 pytestmark = pytest.mark.unit
 

@@ -1,12 +1,13 @@
 from __future__ import annotations
-from src.conf.enums import Role
+
 import uuid
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Table, Enum, UUID
+from sqlalchemy import UUID, Enum, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.adapters.database.models._model_base import BaseWithTimestamps
+from src.conf.enums import Role
 
 if TYPE_CHECKING:
     from src.modules.expeditions.infrastructure.db.models import (

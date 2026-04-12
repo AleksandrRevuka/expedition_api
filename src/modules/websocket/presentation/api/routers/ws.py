@@ -1,4 +1,3 @@
-from src.conf.logging_config import LOGGER
 from uuid import UUID
 
 from dependency_injector.wiring import inject

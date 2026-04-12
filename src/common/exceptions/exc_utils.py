@@ -3,8 +3,8 @@ from types import TracebackType
 
 from fastapi import Request
 
-from src.conf.logging_config import LOGGER
 from src.common.utils.color_message import color_message
+from src.conf.logging_config import LOGGER
 
 
 def exc_name(ex: Exception) -> str:

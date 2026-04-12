@@ -1,14 +1,11 @@
-from src.modules.expeditions.application.use_cases.remove_member import (
-    RemoveMemberUseCase,
-)
 from src.modules.expeditions.application.commands.commands import (
     ChangeExpeditionStatusCommand,
     ConfirmMemberCommand,
     CreateExpeditionCommand,
     DeleteExpeditionCommand,
     InviteMemberCommand,
-    UpdateExpeditionCommand,
     RemoveMemberCommand,
+    UpdateExpeditionCommand,
 )
 from src.modules.expeditions.application.handlers.handlers_interface import (
     ExpeditionsCommandHandler,
@@ -27,6 +24,9 @@ from src.modules.expeditions.application.use_cases.delete_expedition import (
 )
 from src.modules.expeditions.application.use_cases.invite_member import (
     InviteMemberUseCase,
+)
+from src.modules.expeditions.application.use_cases.remove_member import (
+    RemoveMemberUseCase,
 )
 from src.modules.expeditions.application.use_cases.update_expedition import (
     UpdateExpeditionUseCase,

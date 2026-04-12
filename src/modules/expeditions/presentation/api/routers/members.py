@@ -1,19 +1,18 @@
-from fastapi import Depends
-from src.modules.expeditions.domain.exceptions.exceptions import (
-    InvalidExpeditionMemberRoleError,
-)
-from src.conf.enums import Role
-from src.modules.users.application.use_cases.get_user import GetUserUseCase
-from src.common.container.main_container import Container
-from src.common.role_routers import MemberAPIRouter, ChiefAPIRouter
 from uuid import UUID
 
-from dependency_injector.wiring import inject, Provide
+from dependency_injector.wiring import Provide, inject
+from fastapi import Depends
 
+from src.common.container.main_container import Container
+from src.common.role_routers import ChiefAPIRouter, MemberAPIRouter
 from src.common.security.auth_dependencies import get_current_user
+from src.conf.enums import Role
 from src.modules.expeditions.application.commands.commands import (
     ConfirmMemberCommand,
     InviteMemberCommand,
+)
+from src.modules.expeditions.domain.exceptions.exceptions import (
+    InvalidExpeditionMemberRoleError,
 )
 from src.modules.expeditions.presentation.api.schemas.requests import (
     InviteMemberBody,
@@ -22,6 +21,7 @@ from src.modules.expeditions.presentation.api.schemas.responses import (
     ExpeditionResponse,
 )
 from src.modules.expeditions.presentation.dependencies import MessagebusExpeditionsDep
+from src.modules.users.application.use_cases.get_user import GetUserUseCase
 
 members_router = MemberAPIRouter()
 chief_router = ChiefAPIRouter()

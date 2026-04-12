@@ -1,6 +1,7 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from src.adapters.repositories.repository import AsyncRepository
 from src.modules.users.domain.aggregates.user import UserAggregate
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class UsersRepository(AsyncRepository[UserAggregate]):

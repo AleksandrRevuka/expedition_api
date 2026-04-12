@@ -1,12 +1,13 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 
 import pytest
 from pytest_mock import MockerFixture
-
-from src.modules.users.application.commands.commands import LoginUserCommand
 from src.modules.users.application.use_cases.login_user import LoginUserUseCase
 from src.modules.users.domain.aggregates.user import UserAggregate
 from src.modules.users.domain.exceptions.exceptions import InvalidCredentialsError
+
+from src.modules.users.application.commands.commands import LoginUserCommand
 
 pytestmark = pytest.mark.unit
 

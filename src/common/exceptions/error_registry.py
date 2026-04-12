@@ -1,8 +1,8 @@
-from src.modules.users.domain.exceptions import exceptions as exc_users
-from src.modules.expeditions.domain.exceptions import exceptions as exc_expeditions
 from fastapi.exceptions import RequestValidationError
 from pydantic import ValidationError as PydanticValidationError
 
+from src.modules.expeditions.domain.exceptions import exceptions as exc_expeditions
+from src.modules.users.domain.exceptions import exceptions as exc_users
 
 # Map exception type → HTTP status code.
 ERROR_STATUS_MAP: dict[type[Exception], int] = {

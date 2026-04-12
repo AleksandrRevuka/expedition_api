@@ -1,6 +1,5 @@
-from datetime import UTC, datetime
 import uuid
-
+from datetime import UTC, datetime
 
 USER_ID = uuid.UUID("dddddddd-dddd-dddd-dddd-dddddddddddd")
 CHIEF_ID = uuid.UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")

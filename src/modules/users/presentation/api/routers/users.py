@@ -1,7 +1,7 @@
-from fastapi import Depends
 from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
+from fastapi import Depends
 
 from src.common.container.main_container import Container
 from src.common.role_routers import AuthenticatedAPIRouter

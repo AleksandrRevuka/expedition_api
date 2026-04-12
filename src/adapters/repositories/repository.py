@@ -1,9 +1,8 @@
-from src.conf.logging_config import LOGGER
-from sqlalchemy.orm import Mapper, joinedload, selectinload
 from typing import Any
 
-from sqlalchemy import delete, insert, select, update, Select, inspect
+from sqlalchemy import Select, delete, insert, inspect, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Mapper, joinedload, selectinload
 
 from src.common.domain.base_models import AggregateRoot
 from src.common.protocols.repository import BaseAsyncRepository

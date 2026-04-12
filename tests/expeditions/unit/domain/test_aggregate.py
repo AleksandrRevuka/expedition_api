@@ -1,12 +1,13 @@
 from collections.abc import Callable, Coroutine
 from typing import Any
 from uuid import uuid4
-import pytest
 
-from src.conf.enums import ExpeditionStatus, MemberState
+import pytest
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
 from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
 from src.modules.expeditions.domain.exceptions import exceptions as exc
+
+from src.conf.enums import ExpeditionStatus, MemberState
 from tests.config import (
     CHIEF_ID,
     EXPEDITION_ID,

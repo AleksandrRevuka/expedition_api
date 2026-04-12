@@ -1,8 +1,8 @@
-from src.conf.app_config import get_app_config
 from dependency_injector.wiring import inject
 from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 
+from src.conf.app_config import get_app_config
 from src.modules.auth.presentation.api.schemas.schemas import TokenResponse
 from src.modules.users.application.commands.commands import (
     CreateUserCommand,

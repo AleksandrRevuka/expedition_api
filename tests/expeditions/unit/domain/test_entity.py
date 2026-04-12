@@ -1,15 +1,15 @@
-from passlib.utils.compat import u
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 from uuid import uuid4
 
 import pytest
-
-from src.conf.enums import MemberState
 from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
 from src.modules.expeditions.domain.exceptions.exceptions import (
     InvalidMemberStateTransitionError,
     MemberConfirmAccessDeniedError,
 )
+
+from src.conf.enums import MemberState
 from tests.config import MEMBER_ID
 
 pytestmark = pytest.mark.unit

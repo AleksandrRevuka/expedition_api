@@ -4,14 +4,14 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, status
 
 from src.common.container.main_container import Container
-from src.common.role_routers import ChiefAPIRouter, AuthenticatedAPIRouter
+from src.common.role_routers import AuthenticatedAPIRouter, ChiefAPIRouter
 from src.common.security.auth_dependencies import get_current_user
 from src.modules.expeditions.application.commands.commands import (
     ChangeExpeditionStatusCommand,
     CreateExpeditionCommand,
     DeleteExpeditionCommand,
-    UpdateExpeditionCommand,
     RemoveMemberCommand,
+    UpdateExpeditionCommand,
 )
 from src.modules.expeditions.application.use_cases.get_expedition import (
     GetExpeditionUseCase,

@@ -1,8 +1,8 @@
-from typing import Any
-from src.adapters.database.models._model_utils.datetime import get_utc_now
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
-from dataclasses import dataclass, asdict, field
+from typing import Any
 
+from src.adapters.database.models._model_utils.datetime import get_utc_now
 from src.common.interfaces.events import AbstractEvent
 
 

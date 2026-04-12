@@ -1,15 +1,16 @@
-from src.conf.enums import Role
-from typing import Any, Callable, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 
-import pytest
 import httpx
-from httpx_ws import aconnect_ws, WebSocketDisconnect
+import pytest
+from httpx_ws import WebSocketDisconnect, aconnect_ws
 from httpx_ws.transport import ASGIWebSocketTransport
-
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
 from src.modules.users.domain.aggregates.user import UserAggregate
+
 from src.app import CustomFastAPI
-from tests.config import EXPEDITION_ID, CHIEF_ID
+from src.conf.enums import Role
+from tests.config import CHIEF_ID, EXPEDITION_ID
 
 pytestmark = [pytest.mark.e2e, pytest.mark.asyncio]
 

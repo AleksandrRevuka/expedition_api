@@ -11,7 +11,6 @@ from src.modules.users.domain.aggregates.user import UserAggregate
 from src.modules.users.infrastructure.token_service import TokenService
 from src.modules.websocket.manager import ExpeditionConnectionManager
 
-
 WebSocketManagerDep = Annotated[
     ExpeditionConnectionManager, Depends(Provide[Container.core.ws_manager])
 ]

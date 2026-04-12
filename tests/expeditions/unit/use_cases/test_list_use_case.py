@@ -1,8 +1,8 @@
-from typing import Callable, Any, Coroutine
+from collections.abc import Callable, Coroutine
+from typing import Any
 
 import pytest
 from pytest_mock import MockerFixture
-
 from src.modules.expeditions.application.use_cases.list_expeditions import ListExpeditionsUseCase
 from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
 

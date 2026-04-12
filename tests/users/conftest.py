@@ -1,5 +1,4 @@
 import pytest_asyncio
-
 from src.modules.users.domain.aggregates.user import UserAggregate
 
 

@@ -4,7 +4,6 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 import click
-
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,

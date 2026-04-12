@@ -1,8 +1,9 @@
-from tests.config import EXPEDITION_ID, USER_ID, MEMBER_ID
-from fastapi import WebSocket
-from src.modules.websocket.manager import ExpeditionConnectionManager
 import pytest
+from fastapi import WebSocket
 from pytest_mock import MockerFixture
+from src.modules.websocket.manager import ExpeditionConnectionManager
+
+from tests.config import EXPEDITION_ID, MEMBER_ID, USER_ID
 
 pytestmark = pytest.mark.unit
 

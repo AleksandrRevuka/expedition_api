@@ -3,11 +3,13 @@ from fastapi import APIRouter
 from src.modules.auth.presentation.api.routers import auth
 from src.modules.expeditions.presentation.api.routers.expeditions import (
     auth_router as expeditions_auth_router,
+)
+from src.modules.expeditions.presentation.api.routers.expeditions import (
     chief_router as expeditions_chief_router,
 )
 from src.modules.expeditions.presentation.api.routers.members import (
-    members_router,
     chief_router,
+    members_router,
 )
 from src.modules.users.presentation.api.routers.users import authenticated_router
 from src.modules.websocket.presentation.api.routers.ws import ws_router

@@ -1,20 +1,20 @@
-from src.modules.websocket.manager import ExpeditionConnectionManager
-from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
-from src.modules.expeditions.infrastructure.units_of_work import ExpeditionsStorageUnitOfWork
-from tests.config import CHIEF_ID, EXPEDITION_ID, PAST_DATE, MEMBER_ID, USER_ID
-import uuid
-from datetime import datetime, UTC
-from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
-from typing import Any
 import os
+import uuid
 from collections.abc import AsyncGenerator, Callable, Coroutine
+from datetime import UTC, datetime
+from typing import Any
 
 import pytest
 import pytest_asyncio
-from httpx import AsyncClient, ASGITransport
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import NullPool
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.modules.expeditions.domain.aggregates.expedition import ExpeditionAggregate
+from src.modules.expeditions.domain.entities.member import ExpeditionMemberEntity
+from src.modules.expeditions.infrastructure.units_of_work import ExpeditionsStorageUnitOfWork
+from src.modules.users.domain.aggregates.user import UserAggregate
+from src.modules.websocket.manager import ExpeditionConnectionManager
 from starlette.middleware.sessions import SessionMiddleware
 
 from src.adapters.database.config import get_database_config as _get_db_cfg
@@ -24,13 +24,12 @@ from src.all_routers import api_router
 from src.app import CustomFastAPI
 from src.common.container.main_container import Container
 from src.common.exceptions.global_error_handler import GlobalErrorHandler
-from src.conf.enums import Role, ExpeditionStatus, MemberState
+from src.conf.enums import ExpeditionStatus, MemberState, Role
 from src.conf.security_conf import get_jwt_config
-from src.modules.users.domain.aggregates.user import UserAggregate
 from src.modules.users.infrastructure.password_service import PasswordService
 from src.modules.users.infrastructure.token_service import TokenService
 from src.modules.users.infrastructure.units_of_work import UsersStorageUnitOfWork
-
+from tests.config import CHIEF_ID, EXPEDITION_ID, MEMBER_ID, PAST_DATE, USER_ID
 
 database_config = _get_db_cfg()
 
