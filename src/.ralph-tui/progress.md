@@ -119,3 +119,55 @@ Created shared TypeScript types, configured Axios API client with authentication
 5. **Enum usage in TypeScript**: Domain enums (Role, ExpeditionStatus, MemberState) map to backend string values, making API contracts type-safe
 
 ---
+
+## [2026-04-14] - US-004: Shared UI Components
+
+### Implementation Summary
+Created reusable cyberpunk-styled UI primitives (Button, Input, Modal, Badge, GlassPanel) for consistent theming across all feature UIs. All components use Orbitron font for labels/headings and leverage TailwindCSS with custom glass-panel and neon utilities.
+
+### Files Created
+- `frontend/src/shared/ui/Button.tsx` — Button component with:
+  - Variants: primary (cyan), secondary (purple), danger (red), ghost (outlined cyan)
+  - Props: variant, isLoading, disabled, and standard HTML button attributes
+  - Loading state renders animated spinner
+  - Disabled state dims button and disables pointer events
+  - Neon glow shadows on hover for primary/secondary/danger variants
+- `frontend/src/shared/ui/Input.tsx` — Input component with:
+  - Props: label, error, and standard HTML input attributes
+  - Glass-panel styling with dark-bg transparency
+  - Orbitron font for label
+  - Neon-cyan focus ring with border transition
+  - Error state shows red border and error message below input
+- `frontend/src/shared/ui/Modal.tsx` — Modal component with:
+  - Props: isOpen, onClose, title, children
+  - Glass overlay with backdrop-blur effect (darker background layer)
+  - Closes on Escape key via useEffect hook
+  - Closes on backdrop click (clicking outside modal)
+  - Close button in top-right corner
+  - Header with title and cyan border separator
+  - Proper accessibility attributes (role="dialog", aria-modal="true")
+- `frontend/src/shared/ui/Badge.tsx` — Badge component with:
+  - Variants: cyan, purple, green, yellow, red, gray
+  - Pill-shaped styling with semi-transparent background and colored borders
+  - Orbitron font for consistent labeling
+- `frontend/src/shared/ui/GlassPanel.tsx` — Glass card container with:
+  - Glow options: cyan, purple, none
+  - Glass-panel styling with backdrop-blur and transparency
+  - Optional neon border and colored shadows based on glow variant
+- `frontend/src/shared/ui/index.ts` — Barrel export for all UI components and their TypeScript props interfaces
+
+### Build Verification
+✅ `npm run build` exits with code 0
+✅ TypeScript strict mode compilation succeeds
+✅ All 79 modules transformed correctly
+✅ Vite production build outputs to `dist/` successfully
+
+### Learnings
+1. **React.forwardRef with TypeScript**: Use `React.forwardRef<HTMLElement, Props>` pattern for components that need ref forwarding; wrap both component definition and props extension (e.g., `ButtonHTMLAttributes<HTMLButtonElement>`)
+2. **useEffect cleanup in TypeScript**: Must ensure all code paths in useEffect return a cleanup function or undefined; early `if (!isOpen) return` is cleaner than conditional logic inside
+3. **Orbitron font in Tailwind**: Font is available globally via index.css `@layer base`, so use `font-orbitron` class directly on text elements; configured in tailwind.config.js theme.fontFamily
+4. **Glass-panel utility reuse**: Custom `.glass-panel` class defined in app/index.css combines `backdrop-blur-md`, `bg-opacity-10`, and border styling; reuse it as base class then add variants (glow colors, shadows)
+5. **Tailwind arbitrary values**: Use `shadow-[0_0_30px_rgba(0,255,255,0.3)]` syntax for precise neon glow effects not in the standard Tailwind palette
+6. **Component composition**: Leverage existing utilities and custom classes (glass-panel, neon colors) defined in previous iterations rather than reinventing styling
+
+---
