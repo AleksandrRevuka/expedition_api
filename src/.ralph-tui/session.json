@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "sessionId": "d708734f-4e27-4678-ba74-594d4d3a2ffd",
+  "sessionId": "82b4a7fa-5d13-4b96-ae99-36d4b206e6a1",
   "status": "running",
-  "startedAt": "2026-04-14T09:33:09.027Z",
-  "updatedAt": "2026-04-14T09:46:26.829Z",
-  "currentIteration": 5,
+  "startedAt": "2026-04-14T10:02:55.473Z",
+  "updatedAt": "2026-04-14T10:04:12.641Z",
+  "currentIteration": 0,
   "maxIterations": 25,
-  "tasksCompleted": 5,
+  "tasksCompleted": 0,
   "isPaused": false,
   "agentPlugin": "claude",
   "trackerState": {
@@ -18,36 +18,36 @@
         "id": "US-002",
         "title": "Frontend Project Scaffold",
         "status": "completed",
-        "completedInSession": true
+        "completedInSession": false
       },
       {
         "id": "US-001",
         "title": "Docker & Nginx Infrastructure",
         "status": "completed",
-        "completedInSession": true
+        "completedInSession": false
       },
       {
         "id": "US-003",
         "title": "Shared Types, API Client & App Entry",
         "status": "completed",
-        "completedInSession": true
+        "completedInSession": false
       },
       {
         "id": "US-004",
         "title": "Shared UI Components",
         "status": "completed",
-        "completedInSession": true
+        "completedInSession": false
       },
       {
         "id": "US-005",
         "title": "Auth Store & API Calls",
         "status": "completed",
-        "completedInSession": true
+        "completedInSession": false
       },
       {
         "id": "US-013",
         "title": "Client-Side User Cache",
-        "status": "open",
+        "status": "completed",
         "completedInSession": false
       },
       {
@@ -94,58 +94,7 @@
       }
     ]
   },
-  "iterations": [
-    {
-      "iteration": 1,
-      "status": "completed",
-      "taskId": "US-002",
-      "taskTitle": "Frontend Project Scaffold",
-      "taskCompleted": true,
-      "durationMs": 93807,
-      "startedAt": "2026-04-14T09:35:38.523Z",
-      "endedAt": "2026-04-14T09:37:12.330Z"
-    },
-    {
-      "iteration": 2,
-      "status": "completed",
-      "taskId": "US-001",
-      "taskTitle": "Docker & Nginx Infrastructure",
-      "taskCompleted": true,
-      "durationMs": 174729,
-      "startedAt": "2026-04-14T09:37:13.447Z",
-      "endedAt": "2026-04-14T09:40:08.176Z"
-    },
-    {
-      "iteration": 3,
-      "status": "completed",
-      "taskId": "US-003",
-      "taskTitle": "Shared Types, API Client & App Entry",
-      "taskCompleted": true,
-      "durationMs": 123449,
-      "startedAt": "2026-04-14T09:40:09.318Z",
-      "endedAt": "2026-04-14T09:42:12.767Z"
-    },
-    {
-      "iteration": 4,
-      "status": "completed",
-      "taskId": "US-004",
-      "taskTitle": "Shared UI Components",
-      "taskCompleted": true,
-      "durationMs": 82969,
-      "startedAt": "2026-04-14T09:42:13.814Z",
-      "endedAt": "2026-04-14T09:43:36.783Z"
-    },
-    {
-      "iteration": 5,
-      "status": "completed",
-      "taskId": "US-005",
-      "taskTitle": "Auth Store & API Calls",
-      "taskCompleted": true,
-      "durationMs": 68904,
-      "startedAt": "2026-04-14T09:43:37.838Z",
-      "endedAt": "2026-04-14T09:44:46.742Z"
-    }
-  ],
+  "iterations": [],
   "skippedTaskIds": [],
   "cwd": "/home/alex/python_projects/expedition_api/src",
   "activeTaskIds": [],
