@@ -209,3 +209,33 @@ Implemented Zustand-based authentication store with API functions for registrati
 6. **Axios interceptor integration**: 401 response handler in apiClient already handles failed rehydration by clearing token and reloading; no need for additional error handling in the rehydration useEffect.
 
 ---
+
+## [2026-04-14] - US-013: Client-Side User Cache
+
+### Implementation Summary
+Implemented a deduplicated, cached user lookup system using React Query. This provides a reusable hook for fetching users by ID with automatic request deduplication and infinite cache lifetime.
+
+### Files Created
+- `frontend/src/features/users/api.ts` — API function:
+  - `fetchUser(userId: string)` → GET /api/users/{userId}, returns User
+- `frontend/src/features/users/useUser.ts` — React hook with:
+  - Accepts `userId: string` parameter
+  - Uses `useQuery(['user', userId], () => fetchUser(userId), { staleTime: Infinity })`
+  - Returns `{ data: User | undefined, isLoading: boolean }`
+  - React Query automatically deduplicates requests (same userId = single HTTP call)
+- `frontend/src/features/users/index.ts` — Barrel export for useUser and fetchUser
+
+### Build Verification
+✅ `npm run type-check` passes with no TypeScript errors
+✅ `npm run build` exits with code 0
+✅ All 146 modules transformed correctly
+✅ Production bundle built successfully to `dist/`
+
+### Learnings
+1. **React Query deduplication**: Multiple components calling useQuery with the same queryKey result in a single HTTP request; subsequent calls are served from the cache while the first request is in flight.
+2. **staleTime: Infinity pattern**: User data is immutable by definition (ID never changes), so infinite staleTime prevents unnecessary refetches. The cache is invalidated only on explicit mutations or cache clearing.
+3. **Hook return types**: Returning destructured { data, isLoading } from useQuery simplifies caller usage; callers render loading placeholders when isLoading is true.
+4. **Feature organization**: Features are organized as /frontend/src/features/<feature>/{api.ts, hooks, components, index.ts}. Barrel exports (index.ts) provide clean import paths.
+5. **Cross-feature API reuse**: The useUser hook will be used by ExpeditionDetail (created in a future story) to display member names from cached User objects instead of raw member.user_id values.
+
+---
