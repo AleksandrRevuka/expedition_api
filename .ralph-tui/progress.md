@@ -103,3 +103,41 @@
   - All acceptance criteria met
 
 ---
+
+## [2026-04-14] - US-009
+- **What was implemented:**
+  - Created `frontend/src/features/expeditions/components/ExpeditionCard.tsx`:
+    - Displays expedition title, description, status badge (color-coded), member count/capacity, and start date
+    - Status badges map to colors: planned=yellow, in_progress=cyan, completed=green, cancelled=red
+    - Selected state shows cyan neon glow with enhanced shadow
+    - Click handler calls onSelect(id) callback
+  - Created `frontend/src/features/expeditions/components/ExpeditionList.tsx`:
+    - Fetches expeditions using useQuery(['expeditions'], fetchExpeditions)
+    - Shows animated loading spinner with label during fetch
+    - Shows error state with error message and retry button
+    - Shows empty state with role-specific message (chief vs member)
+    - Chief users see '+ NEW' button above list to create new expeditions
+    - Grid layout: 1 column mobile, 2 columns tablet, 3 columns desktop
+    - Tracks selected expedition in local state
+  - Created `frontend/src/features/expeditions/components/index.ts` for clean exports
+
+- **Files changed:**
+  - Created: `frontend/src/features/expeditions/components/ExpeditionCard.tsx`
+  - Created: `frontend/src/features/expeditions/components/ExpeditionList.tsx`
+  - Created: `frontend/src/features/expeditions/components/index.ts`
+
+- **Learnings:**
+  - Status enum values use snake_case (in_progress) but display text should use Title Case with spaces
+  - Badge component supports variant prop (cyan, purple, green, yellow, red, gray) for status coloring
+  - GlassPanel glow prop can be set conditionally based on selection state
+  - Grid layout with Tailwind (md: and lg: breakpoints) adapts to different screen sizes
+  - Loading/error states should prevent layout shift using fixed height containers with flex centering
+  - Empty state messages differ based on user role (chief can create, member waits for invitation)
+  - Selected state uses enhanced shadow effect `shadow-[0_0_40px_rgba(0,255,255,0.6)]` for cyan neon glow
+
+- **Build verification:**
+  - `npm run build` exits 0 - all TypeScript compiles successfully
+  - No type errors in new code or existing codebase
+  - All acceptance criteria met
+
+---

@@ -3,10 +3,10 @@
   "sessionId": "82b4a7fa-5d13-4b96-ae99-36d4b206e6a1",
   "status": "running",
   "startedAt": "2026-04-14T10:02:55.473Z",
-  "updatedAt": "2026-04-14T10:07:24.906Z",
-  "currentIteration": 2,
+  "updatedAt": "2026-04-14T10:09:28.988Z",
+  "currentIteration": 3,
   "maxIterations": 25,
-  "tasksCompleted": 2,
+  "tasksCompleted": 3,
   "isPaused": false,
   "agentPlugin": "claude",
   "trackerState": {
@@ -65,8 +65,8 @@
       {
         "id": "US-006",
         "title": "Login & Register Modals",
-        "status": "open",
-        "completedInSession": false
+        "status": "completed",
+        "completedInSession": true
       },
       {
         "id": "US-009",
@@ -114,6 +114,16 @@
       "durationMs": 82199,
       "startedAt": "2026-04-14T10:04:13.680Z",
       "endedAt": "2026-04-14T10:05:35.879Z"
+    },
+    {
+      "iteration": 3,
+      "status": "completed",
+      "taskId": "US-006",
+      "taskTitle": "Login & Register Modals",
+      "taskCompleted": true,
+      "durationMs": 107931,
+      "startedAt": "2026-04-14T10:05:36.971Z",
+      "endedAt": "2026-04-14T10:07:24.902Z"
     }
   ],
   "skippedTaskIds": [],
