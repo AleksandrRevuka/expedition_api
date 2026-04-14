@@ -141,3 +141,53 @@
   - All acceptance criteria met
 
 ---
+
+## [2026-04-14] - US-011
+- **What was implemented:**
+  - Created `frontend/src/features/expeditions/components/CreateExpeditionModal.tsx`:
+    - Form fields: title (text), description (textarea), start_at (datetime-local), capacity (number)
+    - Calls createExpedition() with payload
+    - Invalidates ['expeditions'] query on success
+    - Closes modal on success
+    - Shows loading state during submission
+    - Displays inline errors on failure
+  - Created `frontend/src/features/expeditions/components/EditExpeditionModal.tsx`:
+    - Pre-fills title and description from expedition prop using useEffect
+    - Calls updateExpedition() with title/description only (per API spec)
+    - Invalidates both ['expedition', id] and ['expeditions'] on success
+    - Closes modal on success
+    - Shows loading state during submission
+    - Displays inline errors on failure
+  - Created `frontend/src/features/expeditions/components/InviteMemberModal.tsx`:
+    - Single field for user ID (UUID)
+    - Displays informational note: "The invited user must have the member role to accept the invitation."
+    - Calls inviteMember(expeditionId, userId) with proper payload
+    - Invalidates ['expedition', id] on success
+    - Closes modal on success
+    - Shows loading state during submission
+    - Displays inline errors on failure
+  - Updated `frontend/src/features/expeditions/components/index.ts` to export all three new modals
+
+- **Files changed:**
+  - Created: `frontend/src/features/expeditions/components/CreateExpeditionModal.tsx`
+  - Created: `frontend/src/features/expeditions/components/EditExpeditionModal.tsx`
+  - Created: `frontend/src/features/expeditions/components/InviteMemberModal.tsx`
+  - Modified: `frontend/src/features/expeditions/components/index.ts`
+
+- **Learnings:**
+  - Modal form pattern is consistent: useState for each field, handleSubmit for async submission
+  - useQueryClient().invalidateQueries({ queryKey: [...] }) is the pattern for cache invalidation
+  - useEffect with expedition dependency is needed to pre-fill edit modals
+  - All inputs should be disabled during loading to prevent double-submission
+  - Inline error display (not alerts) provides better UX within modals
+  - Datetime-local input type provides native date/time picker with ISO format
+  - Textarea needs explicit rows prop and resize-none class to match form styling
+  - User ID field uses font-mono class for UUID readability
+  - Informational notes in modals use cyan background at low opacity for consistency with design system
+
+- **Build verification:**
+  - `npm run build` exits 0 - all TypeScript compiles successfully
+  - No type errors in new code or existing codebase
+  - All acceptance criteria met
+
+---

@@ -3,10 +3,10 @@
   "sessionId": "82b4a7fa-5d13-4b96-ae99-36d4b206e6a1",
   "status": "running",
   "startedAt": "2026-04-14T10:02:55.473Z",
-  "updatedAt": "2026-04-14T10:09:28.988Z",
-  "currentIteration": 3,
+  "updatedAt": "2026-04-14T10:11:04.557Z",
+  "currentIteration": 4,
   "maxIterations": 25,
-  "tasksCompleted": 3,
+  "tasksCompleted": 4,
   "isPaused": false,
   "agentPlugin": "claude",
   "trackerState": {
@@ -71,8 +71,8 @@
       {
         "id": "US-009",
         "title": "Expedition List UI",
-        "status": "open",
-        "completedInSession": false
+        "status": "completed",
+        "completedInSession": true
       },
       {
         "id": "US-011",
@@ -124,6 +124,16 @@
       "durationMs": 107931,
       "startedAt": "2026-04-14T10:05:36.971Z",
       "endedAt": "2026-04-14T10:07:24.902Z"
+    },
+    {
+      "iteration": 4,
+      "status": "completed",
+      "taskId": "US-009",
+      "taskTitle": "Expedition List UI",
+      "taskCompleted": true,
+      "durationMs": 123019,
+      "startedAt": "2026-04-14T10:07:25.966Z",
+      "endedAt": "2026-04-14T10:09:28.985Z"
     }
   ],
   "skippedTaskIds": [],
