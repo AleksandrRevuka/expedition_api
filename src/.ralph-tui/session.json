@@ -3,10 +3,10 @@
   "sessionId": "82b4a7fa-5d13-4b96-ae99-36d4b206e6a1",
   "status": "running",
   "startedAt": "2026-04-14T10:02:55.473Z",
-  "updatedAt": "2026-04-14T10:04:12.641Z",
-  "currentIteration": 0,
+  "updatedAt": "2026-04-14T10:05:35.885Z",
+  "currentIteration": 1,
   "maxIterations": 25,
-  "tasksCompleted": 0,
+  "tasksCompleted": 1,
   "isPaused": false,
   "agentPlugin": "claude",
   "trackerState": {
@@ -53,8 +53,8 @@
       {
         "id": "US-007",
         "title": "Expeditions API Layer",
-        "status": "open",
-        "completedInSession": false
+        "status": "completed",
+        "completedInSession": true
       },
       {
         "id": "US-008",
@@ -94,7 +94,18 @@
       }
     ]
   },
-  "iterations": [],
+  "iterations": [
+    {
+      "iteration": 1,
+      "status": "completed",
+      "taskId": "US-007",
+      "taskTitle": "Expeditions API Layer",
+      "taskCompleted": true,
+      "durationMs": 74556,
+      "startedAt": "2026-04-14T10:02:58.081Z",
+      "endedAt": "2026-04-14T10:04:12.637Z"
+    }
+  ],
   "skippedTaskIds": [],
   "cwd": "/home/alex/python_projects/expedition_api/src",
   "activeTaskIds": [],
