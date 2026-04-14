@@ -14,3 +14,4 @@ export { GlassPanel } from './GlassPanel';
 export type { GlassPanelProps } from './GlassPanel';
 
 export { Header } from './Header';
+export type { HeaderProps } from './Header';
