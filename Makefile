@@ -4,6 +4,7 @@ LOGS = docker logs
 ENV = --env-file .env
 APP_FILE = docker/app.yaml
 STORAGES_FILE = docker/storages.yaml
+FRONTEND_FILE = docker/frontend.yaml
 APP_CONTAINER = expedition
 
 export COMPOSE_DOCKER_CLI_BUILD=1
@@ -21,6 +22,15 @@ storages:
 all:
 	${DC} -f ${STORAGES_FILE} -f ${APP_FILE} ${ENV} up --build -d
 
+.PHONY: frontend
+frontend:
+	${DC} -f ${FRONTEND_FILE} ${ENV} up --build -d
+
+.PHONY: all-full
+all-full:
+	docker network create expedition 2>/dev/null || true
+	${DC} -f ${STORAGES_FILE} -f ${APP_FILE} -f ${FRONTEND_FILE} ${ENV} up --build -d
+
 .PHONY: app-down
 app-down:
 	${DC} -f ${APP_FILE} down
@@ -28,6 +38,10 @@ app-down:
 .PHONY: storages-down
 storages-down:
 	${DC} -f ${STORAGES_FILE} down
+
+.PHONY: frontend-down
+frontend-down:
+	${DC} -f ${FRONTEND_FILE} down
 
 .PHONY: app-shell
 app-shell:
@@ -40,6 +54,10 @@ app-logs:
 .PHONY: worker-logs
 worker-logs:
 	${LOGS} expedition_worker -f
+
+.PHONY: frontend-logs
+frontend-logs:
+	${LOGS} expedition_frontend -f
 
 .PHONY: test
 test:
@@ -71,10 +89,15 @@ help:
 	@echo "  make app              - Start the application with Docker Compose."
 	@echo "  make storages         - Start storages (e.g., database, cache) with Docker Compose."
 	@echo "  make all              - Start both the app and storages."
+	@echo "  make frontend         - Start the frontend with Docker Compose."
+	@echo "  make all-full         - Start the full stack (storages, app, and frontend)."
 	@echo "  make app-down         - Stop the application."
 	@echo "  make storages-down    - Stop the storages."
+	@echo "  make frontend-down    - Stop the frontend."
 	@echo "  make app-shell        - Open a shell inside the application container."
 	@echo "  make app-logs         - Show logs of the application container."
+	@echo "  make worker-logs      - Show logs of the worker container."
+	@echo "  make frontend-logs    - Show logs of the frontend container."
 	@echo "  make test             - Run all tests (unit, e2e)."
 	@echo "  make test-unit        - Run unit tests."
 	@echo "  make test-e2e         - Run end-to-end tests."

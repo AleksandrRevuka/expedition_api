@@ -1,0 +1,14 @@
+services:
+  expedition-frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: expedition_frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - expedition
+
+networks:
+  expedition:
+    external: true

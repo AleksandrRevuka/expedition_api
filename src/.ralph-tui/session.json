@@ -3,10 +3,10 @@
   "sessionId": "d708734f-4e27-4678-ba74-594d4d3a2ffd",
   "status": "running",
   "startedAt": "2026-04-14T09:33:09.027Z",
-  "updatedAt": "2026-04-14T09:37:12.341Z",
-  "currentIteration": 0,
+  "updatedAt": "2026-04-14T09:40:08.188Z",
+  "currentIteration": 1,
   "maxIterations": 25,
-  "tasksCompleted": 0,
+  "tasksCompleted": 1,
   "isPaused": false,
   "agentPlugin": "claude",
   "trackerState": {
@@ -17,8 +17,8 @@
       {
         "id": "US-002",
         "title": "Frontend Project Scaffold",
-        "status": "open",
-        "completedInSession": false
+        "status": "completed",
+        "completedInSession": true
       },
       {
         "id": "US-001",
@@ -94,7 +94,18 @@
       }
     ]
   },
-  "iterations": [],
+  "iterations": [
+    {
+      "iteration": 1,
+      "status": "completed",
+      "taskId": "US-002",
+      "taskTitle": "Frontend Project Scaffold",
+      "taskCompleted": true,
+      "durationMs": 93807,
+      "startedAt": "2026-04-14T09:35:38.523Z",
+      "endedAt": "2026-04-14T09:37:12.330Z"
+    }
+  ],
   "skippedTaskIds": [],
   "cwd": "/home/alex/python_projects/expedition_api/src",
   "activeTaskIds": [],
