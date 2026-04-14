@@ -9,6 +9,7 @@ __pycache__/
 #my
 docs/
 .claude
+.tasks
 
 # ruff
 .ruff_cache

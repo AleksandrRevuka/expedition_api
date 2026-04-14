@@ -69,14 +69,23 @@ class AsyncRepository[MT: AggregateRoot](BaseAsyncRepository[MT]):
 
         :param data: Pydantic model or dictionary containing the updated data.
         :param filter_by: Key-value pairs for filtering the entity to update.
+                          If omitted, the primary key from data is used.
         :return: The updated entity.
         """
         data_dict = data if isinstance(data, dict) else data.to_dict()
         data_dict = self._strip_relationships(data_dict)
 
+        mapper: Mapper[MT] | None = inspect(self.model)
+        pk_keys: set[str] = {col.key for col in mapper.primary_key if col.key is not None} if mapper else set()
+
+        if not filter_by:
+            filter_by = {k: data_dict[k] for k in pk_keys if k in data_dict}
+
+        values_dict = {k: v for k, v in data_dict.items() if k not in pk_keys}
+
         stmt = (
             update(self.model)
-            .values(**data_dict)
+            .values(**values_dict)
             .filter_by(**filter_by)
             .returning(self.model)
         )

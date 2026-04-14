@@ -1,6 +1,7 @@
 from functools import lru_cache
+from pathlib import Path
 
-from src.conf.base_config import BaseSet
+from src.conf.base_config import BASE_DIR, BaseSet
 from src.conf.enums import Environment
 
 
@@ -30,6 +31,10 @@ class CORSConfig(BaseSet):
     ALLOW_METHODS: list[str] = ["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"]
 
 
+class PathConfig(BaseSet):
+    TEMPLATE_DIR: Path = BASE_DIR / "src" / "templates"
+
+
 @lru_cache
 def get_uvicorn_config() -> UvicornConfig:
     return UvicornConfig()
@@ -45,11 +50,18 @@ def get_cors_config() -> CORSConfig:
     return CORSConfig()
 
 
+@lru_cache
+def get_path_config() -> PathConfig:
+    return PathConfig()
+
+
 __all__ = [
     "UvicornConfig",
     "AppConfig",
     "CORSConfig",
+    "PathConfig",
     "get_uvicorn_config",
     "get_app_config",
     "get_cors_config",
+    "get_path_config",
 ]

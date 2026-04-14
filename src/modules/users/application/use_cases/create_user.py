@@ -25,4 +25,5 @@ class CreateUserUseCase:
             name=f"{command.first_name} {command.last_name}",
             role=command.role,
         )
-        return await self._users.add_one(user)
+        await self._users.add_one(user)
+        return user

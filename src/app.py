@@ -1,3 +1,5 @@
+from src.tkq import broker
+from src.tkq_sched import pg_source
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -38,6 +40,11 @@ async def lifespan(app: CustomFastAPI) -> AsyncGenerator[None, None]:
     await db.connect(echo=get_database_config().DATABASE_ECHO)
     db.init_session_factory()
 
+    if not broker.is_worker_process:
+        await broker.startup()
+
+    await pg_source.startup()
+
     for mapper in mappers:
         mapper()
 
@@ -45,6 +52,11 @@ async def lifespan(app: CustomFastAPI) -> AsyncGenerator[None, None]:
 
     clear_mappers()
     await db.disconnect()
+    await pg_source.shutdown()
+
+    if not broker.is_worker_process:
+        await broker.shutdown()
+
     LOGGER.info("FastAPI app stopped", app_id=id(app))
 
 

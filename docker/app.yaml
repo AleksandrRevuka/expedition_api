@@ -14,6 +14,32 @@ services:
     networks:
       - expedition
 
+  expedition-worker:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: expedition_worker
+    command: "taskiq worker src.tkq:broker -fsd -tp **/tasks.py"
+    env_file:
+      - ../.env
+    volumes:
+      - ../:/app/
+    networks:
+      - expedition
+
+  expedition-scheduler:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    container_name: expedition_scheduler
+    command: "taskiq scheduler src.tkq_sched:scheduler"
+    env_file:
+      - ../.env
+    volumes:
+      - ../:/app/
+    networks:
+      - expedition
+
 networks:
   expedition:
     external: true

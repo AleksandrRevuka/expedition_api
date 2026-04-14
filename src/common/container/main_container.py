@@ -17,6 +17,7 @@ class Container(containers.DeclarativeContainer):
         modules=[
             "src.common.security.auth_dependencies",
             "src.modules.websocket.presentation.dependencies",
+            "src.modules.users.application.tasks",
         ],
     )
 

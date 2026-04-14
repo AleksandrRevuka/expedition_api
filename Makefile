@@ -37,6 +37,10 @@ app-shell:
 app-logs:
 	${LOGS} ${APP_CONTAINER} -f
 
+.PHONY: worker-logs
+worker-logs:
+	${LOGS} expedition_worker -f
+
 .PHONY: test
 test:
 	${EXEC} ${APP_CONTAINER} sh -c "pytest -m unit && pytest -m e2e"

@@ -28,6 +28,7 @@ class CreateUserCommandHandler(UsersCommandHandler[CreateUserCommand]):
             )
             result = await use_case(command)
             await self.uow.commit()
+        await self.uow.collect_events(result)
         return result
 
 

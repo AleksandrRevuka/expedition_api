@@ -1,4 +1,6 @@
+from taskiq_pg.asyncpg import AsyncpgScheduleSource
 from dependency_injector import containers, providers
+from taskiq_redis import RedisScheduleSource
 
 from src.adapters.handler_dispatcher.bootstrap import Bootstrap
 from src.adapters.handler_dispatcher.messagebus import MessageBus
@@ -40,6 +42,12 @@ from src.modules.users.application.handlers.command_handlers import (
     CreateUserCommandHandler,
     LoginUserCommandHandler,
 )
+from src.modules.users.application.handlers.event_handlers import (
+    UserRegisteredEventHandler,
+    UserChangedRoleEventHandler,
+)
+from src.modules.users.domain.events import UserRegisteredEvent, UserChangedRoleEvent
+from src.tkq_sched import redis_source, pg_source
 
 
 async def init_messagebus(bootstrap: Bootstrap) -> MessageBus:
@@ -50,6 +58,13 @@ class MessagebusContainer(containers.DeclarativeContainer):
     uows = providers.DependenciesContainer()
     services = providers.DependenciesContainer()
     base_container = providers.DependenciesContainer()
+
+    _redis_source: providers.Provider[RedisScheduleSource] = providers.Object(
+        redis_source
+    )
+    _posgres_source: providers.Provider[AsyncpgScheduleSource] = providers.Object(
+        pg_source
+    )
 
     _expeditions_bootstrap = providers.Factory(
         Bootstrap,
@@ -92,11 +107,18 @@ class MessagebusContainer(containers.DeclarativeContainer):
                 LoginUserCommand: LoginUserCommandHandler,
             }
         ),
-        events_handlers_for_injection=providers.Dict({}),
+        events_handlers_for_injection=providers.Dict(
+            {
+                UserRegisteredEvent: providers.List(UserRegisteredEventHandler),
+                UserChangedRoleEvent: providers.List(UserChangedRoleEventHandler),
+            }
+        ),
         dependencies=providers.Dict(
             {
                 "password_service": services.password_service,
                 "token_service": services.token_service,
+                "redis_source": _redis_source,
+                "pg_source": _posgres_source,
             }
         ),
     )

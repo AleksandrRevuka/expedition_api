@@ -1,16 +1,17 @@
-from src.common.schemas.responses import BaseResponseModel
+from pydantic import BaseModel
+
 from src.conf.enums import Role
 from src.modules.users.domain.aggregates.user import UserAggregate
 
 
-class UserResponse(BaseResponseModel):
+class UserDTO(BaseModel):
     id: str
     email: str
     name: str
     role: Role
 
     @classmethod
-    def from_domain(cls, user: UserAggregate) -> "UserResponse":
+    def from_aggregate(cls, user: UserAggregate) -> "UserDTO":
         return cls(
             id=str(user.id),
             email=user.email,

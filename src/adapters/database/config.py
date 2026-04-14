@@ -40,6 +40,15 @@ class DatabaseConfig(BaseSet):
         )
 
     @property
+    def ASYNCPG_DB_URL(self) -> str:
+        """Plain postgresql:// DSN for asyncpg direct connections (no SQLAlchemy driver prefix)."""
+        return (
+            f"{self.DATABASE_DIALECT}://"
+            f"{self.DATABASE_USER}:{self.DATABASE_PASSWORD}"
+            f"@{self.DATABASE_HOST}:{self.DATABASE_PORT}/{self.DATABASE_NAME}"
+        )
+
+    @property
     def SYNC_DB_URL(self) -> str:
         return (
             f"{self.DATABASE_DIALECT}+{Driver.psycopg2}://"
