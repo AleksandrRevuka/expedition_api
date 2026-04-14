@@ -12,3 +12,5 @@ export type { BadgeProps } from './Badge';
 
 export { GlassPanel } from './GlassPanel';
 export type { GlassPanelProps } from './GlassPanel';
+
+export { Header } from './Header';
