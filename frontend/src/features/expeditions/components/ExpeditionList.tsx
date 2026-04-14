@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/features/auth/store';
 import { fetchExpeditions } from '@/features/expeditions/api';
@@ -9,14 +9,15 @@ import { Role } from '@/shared/types';
 export interface ExpeditionListProps {
   onSelectExpedition?: (id: string) => void;
   onCreateNew?: () => void;
+  selectedExpeditionId?: string | null;
 }
 
 export const ExpeditionList: React.FC<ExpeditionListProps> = ({
   onSelectExpedition,
   onCreateNew,
+  selectedExpeditionId,
 }) => {
   const user = useAuthStore((state) => state.user);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const { data: expeditions, isLoading, error, refetch } = useQuery({
     queryKey: ['expeditions'],
@@ -24,7 +25,6 @@ export const ExpeditionList: React.FC<ExpeditionListProps> = ({
   });
 
   const handleSelectExpedition = (id: string) => {
-    setSelectedId(id);
     onSelectExpedition?.(id);
   };
 
@@ -118,7 +118,7 @@ export const ExpeditionList: React.FC<ExpeditionListProps> = ({
             <ExpeditionCard
               key={expedition.id}
               expedition={expedition}
-              isSelected={selectedId === expedition.id}
+              isSelected={selectedExpeditionId === expedition.id}
               onSelect={handleSelectExpedition}
             />
           ))}

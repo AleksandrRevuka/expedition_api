@@ -2,8 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/features/auth/store';
 import { fetchMe } from '@/features/auth/api';
-import { Header } from '@/shared/ui/Header';
-import { Button } from '@/shared/ui';
+import { Header, Button } from '@/shared/ui';
 import { LoginModal, RegisterModal } from '@/features/auth/components';
 import {
   ExpeditionList,
@@ -21,16 +20,31 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [isRehydrating, setIsRehydrating] = useState(!!token && !user);
 
   useEffect(() => {
     if (token && !user) {
+      setIsRehydrating(true);
       fetchMe()
         .then((fetchedUser) => {
           setAuth(token, fetchedUser);
         })
-        .catch(() => {});
+        .catch(() => {
+          // 401 interceptor in shared/api/client.ts clears the token and reloads the page
+        })
+        .finally(() => {
+          setIsRehydrating(false);
+        });
     }
   }, [token, user, setAuth]);
+
+  if (isRehydrating) {
+    return (
+      <div className="min-h-screen bg-dark-bg flex items-center justify-center">
+        <div className="text-neon-cyan font-orbitron animate-pulse">LOADING...</div>
+      </div>
+    );
+  }
 
   // ── Landing ──────────────────────────────────────────────────────────
   if (!user) {
@@ -95,6 +109,7 @@ function App() {
           <ExpeditionList
             onSelectExpedition={setSelectedExpeditionId}
             onCreateNew={() => setShowCreate(true)}
+            selectedExpeditionId={selectedExpeditionId}
           />
         </div>
 
