@@ -171,3 +171,41 @@ Created reusable cyberpunk-styled UI primitives (Button, Input, Modal, Badge, Gl
 6. **Component composition**: Leverage existing utilities and custom classes (glass-panel, neon colors) defined in previous iterations rather than reinventing styling
 
 ---
+
+## [2026-04-14] - US-005: Auth Store & API Calls
+
+### Implementation Summary
+Implemented Zustand-based authentication store with API functions for registration, login, and user profile fetching. Added automatic user rehydration on page refresh to maintain session persistence.
+
+### Files Created
+- `frontend/src/features/auth/api.ts` — API functions for authentication:
+  - `registerUser(payload)` → POST /auth/register (accepts email, password, name)
+  - `loginUser(email, password)` → POST /auth/login (uses form-urlencoded OAuth2 password flow)
+  - `fetchMe()` → GET /users/me (fetches current user profile)
+- `frontend/src/features/auth/store.ts` — Zustand store with:
+  - State: `token` (nullable), `user` (nullable User object)
+  - `setAuth(token, user)` — stores both in state and persists token to localStorage.auth_token
+  - `logout()` — clears both state and removes token from localStorage
+  - Initializes token from localStorage on store creation
+
+### Files Modified
+- `frontend/src/App.tsx` — Added rehydration logic:
+  - useEffect hook checks on mount if token exists but user is null
+  - If so, calls fetchMe() to rehydrate the User object
+  - 401 errors are handled by existing apiClient interceptor (clears token, reloads page)
+
+### Build Verification
+✅ `npm run build` exits with code 0
+✅ `npm run type-check` passes with no TypeScript errors
+✅ All 146 modules transformed correctly
+✅ Production bundle built successfully to `dist/`
+
+### Learnings
+1. **Zustand store initialization**: Store creation function receives `set` callback; initial state can be returned synchronously. Token from localStorage is read once at creation time.
+2. **Form-urlencoded auth**: For OAuth2 password flow, POST body must use `application/x-www-form-urlencoded` with `username` (email) and `password` fields; cannot use JSON for this endpoint.
+3. **Automatic token persistence**: Writing token to localStorage inside setAuth() keeps storage and state in sync without needing persistent middleware; simpler than zustand-persist for this use case.
+4. **Page refresh rehydration**: Check both token AND user state — token present + user null indicates page refresh; calling fetchMe() re-establishes the user object while using the persisted token from localStorage.
+5. **Role source of truth**: Role comes from the User object stored in state, never parsed from JWT. Frontend never decodes tokens, relying entirely on /users/me response for role information.
+6. **Axios interceptor integration**: 401 response handler in apiClient already handles failed rehydration by clearing token and reloading; no need for additional error handling in the rehydration useEffect.
+
+---

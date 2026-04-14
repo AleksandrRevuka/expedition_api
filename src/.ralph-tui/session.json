@@ -3,10 +3,10 @@
   "sessionId": "d708734f-4e27-4678-ba74-594d4d3a2ffd",
   "status": "running",
   "startedAt": "2026-04-14T09:33:09.027Z",
-  "updatedAt": "2026-04-14T09:43:36.787Z",
-  "currentIteration": 3,
+  "updatedAt": "2026-04-14T09:44:46.745Z",
+  "currentIteration": 4,
   "maxIterations": 25,
-  "tasksCompleted": 3,
+  "tasksCompleted": 4,
   "isPaused": false,
   "agentPlugin": "claude",
   "trackerState": {
@@ -35,8 +35,8 @@
       {
         "id": "US-004",
         "title": "Shared UI Components",
-        "status": "open",
-        "completedInSession": false
+        "status": "completed",
+        "completedInSession": true
       },
       {
         "id": "US-005",
@@ -124,6 +124,16 @@
       "durationMs": 123449,
       "startedAt": "2026-04-14T09:40:09.318Z",
       "endedAt": "2026-04-14T09:42:12.767Z"
+    },
+    {
+      "iteration": 4,
+      "status": "completed",
+      "taskId": "US-004",
+      "taskTitle": "Shared UI Components",
+      "taskCompleted": true,
+      "durationMs": 82969,
+      "startedAt": "2026-04-14T09:42:13.814Z",
+      "endedAt": "2026-04-14T09:43:36.783Z"
     }
   ],
   "skippedTaskIds": [],
