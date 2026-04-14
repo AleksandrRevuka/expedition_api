@@ -191,3 +191,46 @@
   - All acceptance criteria met
 
 ---
+## [2026-04-14] - US-010
+- **What was implemented:**
+  - Created `frontend/src/features/expeditions/components/ExpeditionDetail.tsx`:
+    - Fetches expedition using useQuery(['expedition', id], () => fetchExpedition(id))
+    - Displays: title, status badge (color-coded), description, start date, capacity (confirmed/total)
+    - Shows member list with NameSkeleton placeholder while user data loads (never shows raw UUID)
+    - State badges: confirmed=green, invited=yellow
+    - Chief sees 'COMMANDS' panel with: Edit, Invite, Delete buttons and status switcher
+    - Delete button shows confirmation dialog with confirm/cancel options
+    - Status switcher shows all 4 status buttons (planned, in_progress, completed, cancelled) with current status highlighted
+    - All command buttons show loading state during submission
+    - Invited members see purple invitation banner with 'CONFIRM' button (only if not confirmed)
+    - Members only see member list if chief or confirmed member
+    - Chief can remove individual members via 'Remove' button in each member row
+    - Calls useExpeditionWs(expeditionId, token, onAuthError) with logout on auth error
+    - On delete success: calls onDeleted() callback (parent clears selection)
+    - Shows loading spinner during fetch; error state with retry button on failure
+  - Updated `frontend/src/features/expeditions/components/index.ts` to export ExpeditionDetail
+  - MemberRow is a sub-component for rendering each member with name resolution via useUser hook
+
+- **Files changed:**
+  - Created: `frontend/src/features/expeditions/components/ExpeditionDetail.tsx`
+  - Modified: `frontend/src/features/expeditions/components/index.ts`
+
+- **Learnings:**
+  - NameSkeleton pattern: show loading placeholder while user data loads instead of raw UUID
+  - MemberRow uses useUser hook for name resolution with staleTime: Infinity (user data never changes)
+  - Status badge variant determined by ExpeditionStatus enum value (not state)
+  - Chief determination: `user?.role === Role.Chief && user?.id === expedition?.chief_id`
+  - Member access determination: filter members by state === MemberState.Confirmed
+  - Status switcher buttons: grid layout with disabled state when status matches current
+  - Invitation banner only shows for invited members who are NOT confirmed (isInvited && !isMember)
+  - WebSocket connection validated in hook based on expeditionId/token presence
+  - Delete confirmation uses nested GlassPanel with red border for destructive action
+  - All async operations disable buttons/inputs to prevent double-submission
+  - Query invalidation after delete targets both ['expedition', id] and ['expeditions'] queries
+
+- **Build verification:**
+  - `npm run build` exits 0 - all TypeScript compiles successfully
+  - No type errors in new code or existing codebase
+  - All acceptance criteria met
+
+---
