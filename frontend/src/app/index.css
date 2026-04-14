@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Custom utility classes for cyberpunk theme
+ */
+
+@layer components {
+  /**
+   * Glass-morphism panel effect
+   * Frosted glass appearance with backdrop blur
+   */
+  .glass-panel {
+    @apply bg-opacity-10 bg-white backdrop-blur-md border border-opacity-20 border-white rounded-lg;
+  }
+
+  /**
+   * Neon border effects
+   */
+  .neon-border-cyan {
+    @apply border border-neon-cyan shadow-lg shadow-neon-cyan/50;
+  }
+
+  .neon-border-purple {
+    @apply border border-neon-purple shadow-lg shadow-neon-purple/50;
+  }
+
+  /**
+   * Neon text glow effects
+   */
+  .neon-text-cyan {
+    @apply text-neon-cyan drop-shadow-lg drop-shadow-neon-cyan/50;
+  }
+
+  .neon-text-purple {
+    @apply text-neon-purple drop-shadow-lg drop-shadow-neon-purple/50;
+  }
+}

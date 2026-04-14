@@ -81,3 +81,41 @@ Implemented full Docker and Nginx setup for the frontend to run containerized an
 6. **Nginx configuration in Dockerfile**: Copy nginx.conf from source to `/etc/nginx/nginx.conf` before copying built assets to ensure proper reload behavior
 
 ---
+## [2026-04-14] - US-003: Shared Types, API Client & App Entry
+
+### Implementation Summary
+Created shared TypeScript types, configured Axios API client with authentication interceptors, environment configuration, custom Tailwind utilities, React Providers with QueryClient, and updated the app entry point.
+
+### Files Created
+- `frontend/src/shared/types/index.ts` — Exports all domain types: User, Expedition, Member, TokenResponse, WsMessage, Role (enum), ExpeditionStatus (enum), MemberState (enum)
+- `frontend/src/shared/api/client.ts` — Axios instance with:
+  - baseURL: `${ENV.API_URL}/api`
+  - Request interceptor: reads `localStorage.auth_token` and sets `Authorization: Bearer` header
+  - Response interceptor: on 401, clears token and reloads page
+- `frontend/src/shared/config/env.ts` — ENV object exports API_URL from `import.meta.env.VITE_API_URL`
+- `frontend/src/app/index.css` — Custom Tailwind @layer components:
+  - `.glass-panel` — frosted glass effect (bg-opacity-10, backdrop-blur-md, border effects)
+  - `.neon-border-cyan` — cyan border with glow shadow
+  - `.neon-border-purple` — purple border with glow shadow
+  - `.neon-text-cyan` — cyan text with drop shadow glow
+  - `.neon-text-purple` — purple text with drop shadow glow
+- `frontend/src/app/providers.tsx` — React Providers component wrapping QueryClientProvider with configured QueryClient (5min stale time, retry=1)
+
+### Files Modified
+- `frontend/src/main.tsx` — Updated to mount `<Providers><App /></Providers>` into #root (added Providers wrapper)
+- `frontend/tsconfig.json` — Added `"types": ["vite/client"]` to compilerOptions for import.meta.env type support
+
+### Build Verification
+✅ `npm run build` exits with code 0
+✅ TypeScript strict mode checks pass (`npm run type-check`)
+✅ All imports/exports are properly typed
+✅ Vite builds successfully to `dist/`
+
+### Learnings
+1. **Vite environment types**: Must add `"types": ["vite/client"]` to tsconfig.json for TypeScript to recognize `import.meta.env` properties
+2. **Tailwind @layer components**: Use `@layer components` to define custom utility classes at the component layer (lower precedence than utilities, higher than base)
+3. **Axios interceptors**: Request interceptors run before sending, response interceptors run after receiving. 401 handling should clear auth state and reload to redirect to login
+4. **QueryClient configuration**: Default options can be set globally (staleTime, retry) and overridden per-query as needed
+5. **Enum usage in TypeScript**: Domain enums (Role, ExpeditionStatus, MemberState) map to backend string values, making API contracts type-safe
+
+---

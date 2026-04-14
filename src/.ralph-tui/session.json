@@ -3,10 +3,10 @@
   "sessionId": "d708734f-4e27-4678-ba74-594d4d3a2ffd",
   "status": "running",
   "startedAt": "2026-04-14T09:33:09.027Z",
-  "updatedAt": "2026-04-14T09:40:08.188Z",
-  "currentIteration": 1,
+  "updatedAt": "2026-04-14T09:42:12.770Z",
+  "currentIteration": 2,
   "maxIterations": 25,
-  "tasksCompleted": 1,
+  "tasksCompleted": 2,
   "isPaused": false,
   "agentPlugin": "claude",
   "trackerState": {
@@ -23,8 +23,8 @@
       {
         "id": "US-001",
         "title": "Docker & Nginx Infrastructure",
-        "status": "open",
-        "completedInSession": false
+        "status": "completed",
+        "completedInSession": true
       },
       {
         "id": "US-003",
@@ -104,6 +104,16 @@
       "durationMs": 93807,
       "startedAt": "2026-04-14T09:35:38.523Z",
       "endedAt": "2026-04-14T09:37:12.330Z"
+    },
+    {
+      "iteration": 2,
+      "status": "completed",
+      "taskId": "US-001",
+      "taskTitle": "Docker & Nginx Infrastructure",
+      "taskCompleted": true,
+      "durationMs": 174729,
+      "startedAt": "2026-04-14T09:37:13.447Z",
+      "endedAt": "2026-04-14T09:40:08.176Z"
     }
   ],
   "skippedTaskIds": [],
