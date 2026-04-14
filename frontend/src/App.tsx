@@ -1,36 +1,126 @@
-import { useEffect } from 'react';
+// frontend/src/App.tsx
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/features/auth/store';
 import { fetchMe } from '@/features/auth/api';
+import { Header } from '@/shared/ui/Header';
+import { Button } from '@/shared/ui';
+import { LoginModal, RegisterModal } from '@/features/auth/components';
+import {
+  ExpeditionList,
+  ExpeditionDetail,
+  CreateExpeditionModal,
+} from '@/features/expeditions/components';
 
 function App() {
   const token = useAuthStore((state) => state.token);
   const user = useAuthStore((state) => state.user);
   const setAuth = useAuthStore((state) => state.setAuth);
+  const logout = useAuthStore((state) => state.logout);
+
+  const [selectedExpeditionId, setSelectedExpeditionId] = useState<string | null>(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
 
   useEffect(() => {
-    // On app mount, if token is present but user is null, rehydrate the user
     if (token && !user) {
       fetchMe()
         .then((fetchedUser) => {
           setAuth(token, fetchedUser);
         })
-        .catch(() => {
-          // If fetchMe fails, the 401 interceptor will clear the token
-          // and reload the page
-        });
+        .catch(() => {});
     }
   }, [token, user, setAuth]);
 
+  // ── Landing ──────────────────────────────────────────────────────────
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-dark-bg flex flex-col">
+        <div className="flex justify-end gap-3 p-4">
+          <Button variant="ghost" onClick={() => setShowLogin(true)}>
+            Login
+          </Button>
+          <Button variant="secondary" onClick={() => setShowRegister(true)}>
+            Register
+          </Button>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center gap-8">
+          <div className="text-center space-y-3">
+            <h1 className="text-5xl font-bold text-neon-cyan font-orbitron tracking-widest">
+              EXPEDITION
+            </h1>
+            <p className="text-neon-purple text-lg">
+              Увійдіть щоб продовжити
+            </p>
+          </div>
+          <div className="flex gap-4">
+            <Button variant="primary" onClick={() => setShowLogin(true)}>
+              Login
+            </Button>
+            <Button variant="secondary" onClick={() => setShowRegister(true)}>
+              Register
+            </Button>
+          </div>
+        </div>
+
+        <LoginModal
+          isOpen={showLogin}
+          onClose={() => setShowLogin(false)}
+          onSwitchToRegister={() => {
+            setShowLogin(false);
+            setShowRegister(true);
+          }}
+        />
+        <RegisterModal
+          isOpen={showRegister}
+          onClose={() => setShowRegister(false)}
+          onSwitchToLogin={() => {
+            setShowRegister(false);
+            setShowLogin(true);
+          }}
+        />
+      </div>
+    );
+  }
+
+  // ── Main ─────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-dark-bg text-neon-cyan">
-      <h1 className="text-4xl font-bold text-center pt-20">
-        Expedition
-      </h1>
-      <p className="text-center text-neon-purple mt-4">
-        Frontend scaffold ready
-      </p>
+    <div className="h-screen bg-dark-bg flex flex-col overflow-hidden">
+      <Header user={user} onLogout={logout} />
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left column: 2/5 */}
+        <div className="w-2/5 border-r border-neon-cyan/20 overflow-y-auto p-4">
+          <ExpeditionList
+            onSelectExpedition={setSelectedExpeditionId}
+            onCreateNew={() => setShowCreate(true)}
+          />
+        </div>
+
+        {/* Right column: 3/5 */}
+        <div className="w-3/5 overflow-y-auto p-4">
+          {selectedExpeditionId ? (
+            <ExpeditionDetail
+              expeditionId={selectedExpeditionId}
+              onDeleted={() => setSelectedExpeditionId(null)}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-gray-500 font-mono text-sm">
+                Виберіть експедицію
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <CreateExpeditionModal
+        isOpen={showCreate}
+        onClose={() => setShowCreate(false)}
+      />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
