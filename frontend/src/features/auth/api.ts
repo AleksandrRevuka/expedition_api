@@ -11,7 +11,9 @@ import { TokenResponse, User } from '@/shared/types';
 export interface RegisterPayload {
   email: string;
   password: string;
-  name: string;
+  first_name: string;
+  last_name: string;
+  role: 'member' | 'chief';
 }
 
 export async function registerUser(payload: RegisterPayload): Promise<User> {

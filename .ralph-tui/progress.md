@@ -63,3 +63,43 @@
   - No type errors in new code or existing codebase
 
 ---
+
+## [2026-04-14] - US-006
+- **What was implemented:**
+  - Updated `frontend/src/features/auth/api.ts`: RegisterPayload now includes first_name, last_name, role fields (matching backend CreateUserCommand)
+  - Created `frontend/src/features/auth/components/LoginModal.tsx` with:
+    - Email + password input fields
+    - Auto-focused error handling with inline error display
+    - Submit button with loading state during entire async chain
+    - Link to switch to RegisterModal
+    - Async chain: loginUser → fetchMe() → setAuth(token, user) → closes modal on success
+  - Created `frontend/src/features/auth/components/RegisterModal.tsx` with:
+    - First name, last name, email, password input fields
+    - Role select dropdown (member/chief)
+    - Auto-login flow: registerUser → loginUser → fetchMe() → setAuth(token, user)
+    - Inline error display
+    - Link to switch to LoginModal
+    - Submit button with loading state during entire async chain
+  - Created `frontend/src/features/auth/components/index.ts` for clean exports
+
+- **Files changed:**
+  - Modified: `frontend/src/features/auth/api.ts` (updated RegisterPayload interface)
+  - Created: `frontend/src/features/auth/components/LoginModal.tsx`
+  - Created: `frontend/src/features/auth/components/RegisterModal.tsx`
+  - Created: `frontend/src/features/auth/components/index.ts`
+
+- **Learnings:**
+  - RegisterPayload must match backend CreateUserCommand exactly (first_name, last_name, role)
+  - Modal form state should be managed with separate useState hooks for each field
+  - Async chain order is critical: registerUser → login → fetchMe() → setAuth()
+  - Loading state should disable all inputs and show loading text on button
+  - Error messages should be displayed inline within modal, not alerts
+  - Both modals use shared Modal.tsx component with custom form content inside
+  - Switch links allow user to toggle between login/register without closing modal
+
+- **Build verification:**
+  - `npm run build` exits 0 - all TypeScript compiles successfully
+  - No type errors in new code or existing codebase
+  - All acceptance criteria met
+
+---
