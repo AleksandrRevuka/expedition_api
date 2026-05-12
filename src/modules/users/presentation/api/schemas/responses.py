@@ -17,3 +17,11 @@ class UserResponse(BaseResponseModel):
             name=user.name,
             role=user.role,
         )
+
+
+class UserMembersResponse(BaseResponseModel):
+    users: list[UserResponse]
+
+    @classmethod
+    def from_domain(cls, users: list[UserAggregate]) -> "UserMembersResponse":
+        return cls(users=[UserResponse.from_domain(user) for user in users])

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/features/auth/store';
-import { fetchExpeditions } from '@/features/expeditions/api';
+import { fetchExpeditions, fetchMyExpeditions } from '@/features/expeditions/api';
 import { ExpeditionCard } from './ExpeditionCard';
 import { Button } from '@/shared/ui/Button';
 import { Role } from '@/shared/types';
@@ -18,10 +18,11 @@ export const ExpeditionList: React.FC<ExpeditionListProps> = ({
   selectedExpeditionId,
 }) => {
   const user = useAuthStore((state) => state.user);
+  const isChief = user?.role === Role.Chief;
 
   const { data: expeditions, isLoading, error, refetch } = useQuery({
-    queryKey: ['expeditions'],
-    queryFn: fetchExpeditions,
+    queryKey: ['expeditions', user?.id, user?.role],
+    queryFn: isChief ? fetchMyExpeditions : fetchExpeditions,
   });
 
   const handleSelectExpedition = (id: string) => {
@@ -35,8 +36,6 @@ export const ExpeditionList: React.FC<ExpeditionListProps> = ({
   const handleCreateNew = () => {
     onCreateNew?.();
   };
-
-  const isChief = user?.role === Role.Chief;
 
   return (
     <div className="space-y-4">
@@ -111,9 +110,9 @@ export const ExpeditionList: React.FC<ExpeditionListProps> = ({
         </div>
       )}
 
-      {/* Expeditions Grid */}
+      {/* Expeditions List (Single column) */}
       {!isLoading && !error && expeditions && expeditions.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex flex-col gap-4">
           {expeditions.map((expedition) => (
             <ExpeditionCard
               key={expedition.id}

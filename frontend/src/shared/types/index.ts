@@ -8,10 +8,10 @@ export enum Role {
 }
 
 export enum ExpeditionStatus {
-  Planned = 'planned',
-  InProgress = 'in_progress',
-  Completed = 'completed',
-  Cancelled = 'cancelled',
+  Draft = 'draft',
+  Ready = 'ready',
+  Active = 'active',
+  Finished = 'finished',
 }
 
 export enum MemberState {

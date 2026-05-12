@@ -32,10 +32,10 @@ const NameSkeleton: React.FC = () => (
 // Status text formatter
 const formatStatus = (status: ExpeditionStatus): string => {
   const statusMap: Record<ExpeditionStatus, string> = {
-    [ExpeditionStatus.Planned]: 'Planned',
-    [ExpeditionStatus.InProgress]: 'In Progress',
-    [ExpeditionStatus.Completed]: 'Completed',
-    [ExpeditionStatus.Cancelled]: 'Cancelled',
+    [ExpeditionStatus.Draft]: 'Draft',
+    [ExpeditionStatus.Ready]: 'Ready',
+    [ExpeditionStatus.Active]: 'Active',
+    [ExpeditionStatus.Finished]: 'Finished',
   };
   return statusMap[status];
 };
@@ -43,10 +43,10 @@ const formatStatus = (status: ExpeditionStatus): string => {
 // Status badge variant
 const getStatusVariant = (status: ExpeditionStatus): 'cyan' | 'purple' | 'green' | 'yellow' | 'red' | 'gray' => {
   const variantMap: Record<ExpeditionStatus, 'cyan' | 'purple' | 'green' | 'yellow' | 'red' | 'gray'> = {
-    [ExpeditionStatus.Planned]: 'yellow',
-    [ExpeditionStatus.InProgress]: 'cyan',
-    [ExpeditionStatus.Completed]: 'green',
-    [ExpeditionStatus.Cancelled]: 'red',
+    [ExpeditionStatus.Draft]: 'yellow',
+    [ExpeditionStatus.Ready]: 'purple',
+    [ExpeditionStatus.Active]: 'cyan',
+    [ExpeditionStatus.Finished]: 'green',
   };
   return variantMap[status];
 };

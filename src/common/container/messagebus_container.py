@@ -1,5 +1,5 @@
-from taskiq_pg.asyncpg import AsyncpgScheduleSource
 from dependency_injector import containers, providers
+from taskiq_pg.asyncpg import AsyncpgScheduleSource
 from taskiq_redis import RedisScheduleSource
 
 from src.adapters.handler_dispatcher.bootstrap import Bootstrap
@@ -43,11 +43,11 @@ from src.modules.users.application.handlers.command_handlers import (
     LoginUserCommandHandler,
 )
 from src.modules.users.application.handlers.event_handlers import (
-    UserRegisteredEventHandler,
     UserChangedRoleEventHandler,
+    UserRegisteredEventHandler,
 )
-from src.modules.users.domain.events import UserRegisteredEvent, UserChangedRoleEvent
-from src.tkq_sched import redis_source, pg_source
+from src.modules.users.domain.events import UserChangedRoleEvent, UserRegisteredEvent
+from src.tkq_sched import pg_source, redis_source
 
 
 async def init_messagebus(bootstrap: Bootstrap) -> MessageBus:

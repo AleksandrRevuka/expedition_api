@@ -1,10 +1,11 @@
 from taskiq import TaskiqScheduler
-from taskiq_redis import RedisScheduleSource
-from src.tkq import broker
 from taskiq.schedule_sources import LabelScheduleSource
-from src.adapters.redis.config import get_redis_config
-from src.adapters.database.config import get_database_config
 from taskiq_pg.asyncpg import AsyncpgScheduleSource
+from taskiq_redis import RedisScheduleSource
+
+from src.adapters.database.config import get_database_config
+from src.adapters.redis.config import get_redis_config
+from src.tkq import broker
 
 settings = get_redis_config()
 db_settings = get_database_config()

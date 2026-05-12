@@ -1,14 +1,15 @@
 {
   "id": "82b4a7fa-5d13-4b96-ae99-36d4b206e6a1",
-  "status": "running",
+  "status": "completed",
   "startedAt": "2026-04-14T10:02:55.354Z",
-  "updatedAt": "2026-04-14T10:13:29.910Z",
+  "updatedAt": "2026-04-14T10:14:22.569Z",
   "agentPlugin": "claude",
   "trackerPlugin": "json",
   "prdPath": "/home/alex/python_projects/expedition_api/.tasks/active/prd.json",
-  "currentIteration": 6,
+  "currentIteration": 7,
   "maxIterations": 25,
   "totalTasks": 0,
-  "tasksCompleted": 6,
-  "cwd": "/home/alex/python_projects/expedition_api/src"
+  "tasksCompleted": 7,
+  "cwd": "/home/alex/python_projects/expedition_api/src",
+  "endedAt": "2026-04-14T10:14:22.568Z"
 }

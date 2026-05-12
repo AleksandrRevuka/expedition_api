@@ -42,8 +42,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
       // Auto-login: call login API
       const tokenResponse = await loginUser(email, password);
 
-      // Fetch user profile
-      const user = await fetchMe();
+      // Fetch user profile (pass token explicitly — setAuth hasn't stored it yet)
+      const user = await fetchMe(tokenResponse.access_token);
 
       // Set auth state
       setAuth(tokenResponse.access_token, user);

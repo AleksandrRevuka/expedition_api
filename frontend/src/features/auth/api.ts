@@ -38,9 +38,13 @@ export async function loginUser(email: string, password: string): Promise<TokenR
 }
 
 /**
- * Fetch the current user profile
+ * Fetch the current user profile.
+ * Pass `token` explicitly when calling immediately after login/register,
+ * before it has been stored to localStorage by setAuth.
  */
-export async function fetchMe(): Promise<User> {
-  const response = await apiClient.get<User>('/users/me');
+export async function fetchMe(token?: string): Promise<User> {
+  const response = await apiClient.get<User>('/users/me', {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
   return response.data;
 }

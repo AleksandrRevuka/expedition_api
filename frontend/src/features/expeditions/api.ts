@@ -14,6 +14,15 @@ export async function fetchExpeditions(): Promise<Expedition[]> {
 }
 
 /**
+ * Fetch all expeditions for a user
+ */
+export async function fetchMyExpeditions(): Promise<Expedition[]> {
+  const response = await apiClient.get<Expedition[]>('/chief/expeditions');
+  return response.data;
+}
+
+
+/**
  * Fetch a single expedition by ID
  */
 export async function fetchExpedition(id: string): Promise<Expedition> {
@@ -45,7 +54,7 @@ export interface UpdateExpeditionPayload {
 }
 
 export async function updateExpedition(id: string, payload: UpdateExpeditionPayload): Promise<Expedition> {
-  const response = await apiClient.patch<Expedition>(`/expeditions/${id}`, payload);
+  const response = await apiClient.patch<Expedition>(`/chief/expeditions/${id}`, payload);
   return response.data;
 }
 
@@ -53,7 +62,7 @@ export async function updateExpedition(id: string, payload: UpdateExpeditionPayl
  * Delete an expedition
  */
 export async function deleteExpedition(id: string): Promise<void> {
-  await apiClient.delete(`/expeditions/${id}`);
+  await apiClient.delete(`/chief/expeditions/${id}`);
 }
 
 /**
@@ -67,7 +76,7 @@ export async function changeExpeditionStatus(
   id: string,
   status: ExpeditionStatus
 ): Promise<Expedition> {
-  const response = await apiClient.patch<Expedition>(`/expeditions/${id}/status`, {
+  const response = await apiClient.patch<Expedition>(`/chief/expeditions/${id}/status`, {
     status,
   });
   return response.data;
@@ -104,7 +113,7 @@ export async function confirmMembership(expeditionId: string): Promise<Expeditio
  */
 export async function removeMember(expeditionId: string, userId: string): Promise<Expedition> {
   const response = await apiClient.delete<Expedition>(
-    `/expeditions/${expeditionId}/members/${userId}`
+    `/chief/expeditions/${expeditionId}/members/${userId}`
   );
   return response.data;
 }

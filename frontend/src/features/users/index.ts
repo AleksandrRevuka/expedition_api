@@ -3,4 +3,5 @@
  */
 
 export { useUser } from './useUser';
-export { fetchUser } from './api';
+export { useMembers } from './useMembers';
+export { fetchUser, fetchMembers } from './api';

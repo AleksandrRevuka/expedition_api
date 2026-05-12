@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from src.common.domain.base_models import AggregateRoot, BaseWithTimestamps
 from src.conf.enums import Role
-from src.modules.users.domain.events import UserRegisteredEvent, UserChangedRoleEvent
+from src.modules.users.domain.events import UserChangedRoleEvent, UserRegisteredEvent
 
 
 @dataclass(kw_only=True)

@@ -1,12 +1,12 @@
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from taskiq import ScheduledTask
 from taskiq_pg.asyncpg import AsyncpgScheduleSource
 from taskiq_redis import RedisScheduleSource
 
 from src.modules.users.application.handlers.handlers_interface import UsersEventHandler
-from src.modules.users.domain.events import UserRegisteredEvent, UserChangedRoleEvent
+from src.modules.users.domain.events import UserChangedRoleEvent, UserRegisteredEvent
 
 
 class UserRegisteredEventHandler(UsersEventHandler[UserRegisteredEvent]):
@@ -26,7 +26,7 @@ class UserRegisteredEventHandler(UsersEventHandler[UserRegisteredEvent]):
                 labels={},                                                                                                                           
                 args=[],                                                                                                                             
                 kwargs={"email": event.email, "name": event.name},                                                                                   
-                time=datetime.now(tz=timezone.utc) + timedelta(minutes=1),                                                                           
+                time=datetime.now(tz=UTC) + timedelta(minutes=1),                                                                           
             )                                                                                                                                        
         )
         welcome_email_schedule_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{event.user_id}_welcome_email"))
@@ -38,7 +38,7 @@ class UserRegisteredEventHandler(UsersEventHandler[UserRegisteredEvent]):
                 labels={},
                 args=[],
                 kwargs={"email": event.email, "name": event.name},
-                time=datetime.now(tz=timezone.utc) + timedelta(minutes=1),
+                time=datetime.now(tz=UTC) + timedelta(minutes=1),
             )
         )
         print(await self._source.get_schedules())
@@ -52,8 +52,7 @@ class UserChangedRoleEventHandler(UsersEventHandler[UserChangedRoleEvent]):
         self._source = redis_source
 
     async def __call__(self, event: UserChangedRoleEvent) -> None:
-        from src.modules.users.application.tasks import change_role_task
-
+        ...
         # await change_role_task.schedule_by_time(
         #         self._source,
         #         datetime.now(tz=timezone.utc) + timedelta(minutes=1),
@@ -61,4 +60,5 @@ class UserChangedRoleEventHandler(UsersEventHandler[UserChangedRoleEvent]):
         #         role=event.role
         #     )
 
-        await change_role_task.kiq(user_id=str(event.user_id), role=event.role)
+        # await change_role_task.kiq(user_id=str(event.user_id), role=event.role)
+        

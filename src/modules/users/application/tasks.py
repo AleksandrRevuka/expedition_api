@@ -1,5 +1,3 @@
-from src.modules.users.infrastructure.units_of_work import UsersStorageUnitOfWork
-
 from fastapi import Request
 from fastapi_mail import FastMail, MessageSchema, MessageType
 from pydantic import NameEmail
@@ -8,6 +6,7 @@ from taskiq import TaskiqDepends
 from src.common.container.main_container import Container
 from src.conf.email_config import get_mail_conf
 from src.conf.enums import Role
+from src.modules.users.infrastructure.units_of_work import UsersStorageUnitOfWork
 from src.tkq import broker
 
 

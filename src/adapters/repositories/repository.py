@@ -171,7 +171,9 @@ class AsyncRepository[MT: AggregateRoot](BaseAsyncRepository[MT]):
         :return: List of retrieved entities.
         :raises ValueError: If a specified relationship is not found or has an unknown direction.
         """
-        stmt = select(self.model).filter_by(**filter_by)
+        stmt = select(self.model).filter_by(
+            **{k: v for k, v in filter_by.items() if v is not None}
+        )
 
         if relationships:
             stmt = self._apply_relationship_loaders(stmt, relationships)

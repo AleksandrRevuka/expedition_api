@@ -133,7 +133,7 @@ class ExpeditionAggregate(BaseWithTimestamps, AggregateRoot):
 
         for member in confirmed:
             if member.user_id in active_expeditions_by_user:
-                raise exc.MemberAlreadyInActiveExpeditionError()
+                raise exc.MemberAlreadyInActiveExpeditionError(f"Member {member.user_id}")
 
         self.status = ExpeditionStatus.active
         self.add_event(

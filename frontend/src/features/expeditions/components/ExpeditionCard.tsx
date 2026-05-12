@@ -20,14 +20,14 @@ export const ExpeditionCard: React.FC<ExpeditionCardProps> = ({
 
   const getStatusBadgeVariant = (status: ExpeditionStatus) => {
     switch (status) {
-      case ExpeditionStatus.Planned:
+      case ExpeditionStatus.Draft:
         return 'yellow' as const;
-      case ExpeditionStatus.InProgress:
+      case ExpeditionStatus.Ready:
+        return 'purple' as const;
+      case ExpeditionStatus.Active:
         return 'cyan' as const;
-      case ExpeditionStatus.Completed:
+      case ExpeditionStatus.Finished:
         return 'green' as const;
-      case ExpeditionStatus.Cancelled:
-        return 'red' as const;
       default:
         return 'gray' as const;
     }

@@ -1,5 +1,3 @@
-from src.tkq import broker
-from src.tkq_sched import pg_source
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -17,6 +15,8 @@ from src.common.container.main_container import Container
 from src.common.exceptions.global_error_handler import GlobalErrorHandler
 from src.conf.app_config import get_cors_config
 from src.conf.logging_config import LOGGER
+from src.tkq import broker
+from src.tkq_sched import pg_source
 
 COLOR_URL = click.style(
     "http://127.0.0.1:8000/docs", bold=True, fg="green", italic=True

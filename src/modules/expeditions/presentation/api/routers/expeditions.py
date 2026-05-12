@@ -58,6 +58,20 @@ async def get_expedition(
     return ExpeditionResponse.from_domain(expedition)
 
 
+@chief_router.get("", response_model=list[ExpeditionResponse])
+@inject
+async def list_my_expeditions(
+    uow=Depends(Provide[Container.uows.expeditions_storage_uow]),
+    current_user=Depends(get_current_user),
+) -> list[ExpeditionResponse]:
+    async with uow:
+        use_case = ListExpeditionsUseCase(uow.expeditions)
+
+        expeditions = await use_case(chief_id=current_user.id)
+
+    return [ExpeditionResponse.from_domain(e) for e in expeditions]
+
+
 @chief_router.post(
     "", response_model=ExpeditionResponse, status_code=status.HTTP_201_CREATED
 )

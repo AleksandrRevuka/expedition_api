@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/features/auth/store';
 import { fetchMe } from '@/features/auth/api';
-import { Header, Button } from '@/shared/ui';
+import { Header, Button, Toast } from '@/shared/ui';
 import { LoginModal, RegisterModal } from '@/features/auth/components';
 import {
   ExpeditionList,
@@ -94,6 +94,7 @@ function App() {
             setShowLogin(true);
           }}
         />
+        <Toast />
       </div>
     );
   }
@@ -134,6 +135,7 @@ function App() {
         isOpen={showCreate}
         onClose={() => setShowCreate(false)}
       />
+      <Toast />
     </div>
   );
 }

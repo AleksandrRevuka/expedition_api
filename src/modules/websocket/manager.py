@@ -46,7 +46,11 @@ class ExpeditionConnectionManager:
         expedition_id: UUID,
         event: dict,
     ) -> None:
-        LOGGER.debug(f"{self._connections}")
+        LOGGER.debug(
+            "Broadcasting to expedition {expedition_id}, active_users={count}",
+            expedition_id=expedition_id,
+            count=len(self._connections.get(expedition_id, {})),
+        )
         users = self._connections.get(expedition_id, {})
 
         dead = []

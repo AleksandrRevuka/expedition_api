@@ -29,6 +29,11 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
       return;
     }
 
+    if (!userId) {
+      setError('Please enter a user ID');
+      return;
+    }
+
     setIsLoading(true);
 
     try {

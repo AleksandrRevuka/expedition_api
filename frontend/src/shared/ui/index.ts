@@ -15,3 +15,5 @@ export type { GlassPanelProps } from './GlassPanel';
 
 export { Header } from './Header';
 export type { HeaderProps } from './Header';
+
+export { Toast } from './Toast';

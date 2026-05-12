@@ -5,6 +5,7 @@
 
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ENV } from '../config/env';
+import { useNotificationStore } from '@/shared/store/notifications';
 
 /**
  * Create API client with baseURL and interceptors
@@ -40,12 +41,26 @@ apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
   },
-  (error: AxiosError) => {
+  (error: AxiosError<{ message?: string; detail?: string | { msg: string }[] }>) => {
     if (error.response?.status === 401) {
       // Clear auth token and reload the page to redirect to login
       localStorage.removeItem('auth_token');
       window.location.reload();
+      return Promise.reject(error);
     }
+
+    const data = error.response?.data;
+    // Custom backend format: { message, exception, error }
+    // FastAPI validation format: { detail: string | [{msg, loc, ...}] }
+    let message =
+      data?.message ??
+      (typeof data?.detail === 'string'
+        ? data.detail
+        : Array.isArray(data?.detail) && data.detail.length > 0
+          ? data.detail[0].msg
+          : 'Something went wrong');
+
+    useNotificationStore.getState().show(message);
     return Promise.reject(error);
   }
 );
